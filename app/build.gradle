@@ -14,6 +14,7 @@ android {
         buildConfigField "String", "BASE_WEATHER_URL", '"https://api.openweathermap.org/data/2.5/"'
         buildConfigField "String", "BASE_GEO_URL", '"https://maps.googleapis.com/"'
         buildConfigField "String", "GOOGLE_MAP_KEY", '"AIzaSyAZxqV1ilFNl6clsa55-TV59FNCH-pbteg"'
+        buildConfigField "String", "ICON_WEATHER_URL", '"http://openweathermap.org/img/w/"'
         jackOptions {
             enabled true
         }
@@ -40,6 +41,8 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.jakewharton:butterknife:8.5.1'
     compile 'com.android.support:support-v4:26.+'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }

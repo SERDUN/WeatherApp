@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -15,7 +14,7 @@ import com.example.dmitro.weatherapp.data.model.geo.places.Places;
 import com.example.dmitro.weatherapp.data.model.geo.places.Prediction;
 import com.example.dmitro.weatherapp.screen.RecyclerViewEmptySupport;
 import com.example.dmitro.weatherapp.screen.cityChoiceScreen.list.CityChoiceRecyclerAdapter;
-import com.example.dmitro.weatherapp.screen.weatherScreen.WeatherActivity;
+import com.example.dmitro.weatherapp.screen.weatherScreen.WeatherDetailsActivity;
 
 import java.util.ArrayList;
 
@@ -87,7 +86,7 @@ public class CityChoiceActivity extends AppCompatActivity implements CityChoiceC
 
     @Override
     public void showWeatherSelectedCity(double lat, double lon) {
-        Intent intent = new Intent(this, WeatherActivity.class);
+        Intent intent = new Intent(this, WeatherDetailsActivity.class);
         intent.putExtra("lat", lat);
         intent.putExtra("lon", lon);
 

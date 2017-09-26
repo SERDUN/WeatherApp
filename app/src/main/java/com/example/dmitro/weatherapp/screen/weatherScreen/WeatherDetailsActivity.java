@@ -5,21 +5,31 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
 import com.example.dmitro.weatherapp.screen.weatherScreen.fragment.FailureFragment;
 import com.example.dmitro.weatherapp.screen.weatherScreen.fragment.WeatherDetailsFragment;
 
-public class WeatherActivity extends AppCompatActivity implements WeatherScreenContract.WeatherScreenView {
-    private final String LOG_WEATHER_ACTIVITY = "WeatherActivity";
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class WeatherDetailsActivity extends AppCompatActivity implements WeatherScreenContract.WeatherScreenView {
+
+    private final String LOG_WEATHER_ACTIVITY = "WeatherDetailsActivity";
+
     private WeatherScreenContract.WeatherScreenPresenter presenter;
     private Fragment[] fragments;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
+        ButterKnife.bind(this);
         Intent intent = getIntent();
         new WeatherScreenPresenter(intent.getDoubleExtra("lat", 0), intent.getDoubleExtra("lon", 0), this);
         init();
@@ -27,12 +37,15 @@ public class WeatherActivity extends AppCompatActivity implements WeatherScreenC
     }
 
     private void init() {
+
         fragments = new Fragment[2];
         fragments[0] = new WeatherDetailsFragment();
         fragments[1] = new FailureFragment();
         presenter.getWeather();
 
     }
+
+
 
     @Override
     public void setPresenter(WeatherScreenContract.WeatherScreenPresenter presenter) {

@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.screen.cityChoiceScreen.CityChoiceActivity;
-import com.example.dmitro.weatherapp.screen.weatherScreen.WeatherActivity;
+import com.example.dmitro.weatherapp.screen.weatherScreen.WeatherDetailsActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,7 +48,6 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeScreenC
 
     }
 
-    //// TODO: 25.09.17 how be?
     private void getWeather() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -73,7 +72,7 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeScreenC
 
     @Override
     public void openWeatherDetails(double lat, double lon) {
-        Intent intent = new Intent(this, WeatherActivity.class);
+        Intent intent = new Intent(this, WeatherDetailsActivity.class);
         intent.putExtra("lat", lat);
         intent.putExtra("lon", lon);
 

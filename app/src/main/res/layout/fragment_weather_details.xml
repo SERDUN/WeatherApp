@@ -1,54 +1,155 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_gravity="center"
-    android:gravity="center"
+
 
     tools:context="com.example.dmitro.weatherapp.screen.weatherScreen.fragment.WeatherDetailsFragment">
 
+    <ImageView
+        android:id="@+id/backg_weather_details_activity_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/background" />
 
-    <TextView
-        android:id="@+id/city_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="@string/city_name" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/temperature_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="@string/temperature"
-        />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/weather_details_tb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme">
 
-    <TextView
-        android:id="@+id/wind_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="@string/wind" />
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
-    <TextView
-        android:id="@+id/pressure_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="@string/pressure" />
-
-    <TextView
-        android:id="@+id/humidity_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="@string/humidity" />
+        </android.support.v7.widget.Toolbar>
 
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/temperature_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:gravity="center|right"
+                android:text="@string/temperature"
+                android:textSize="@dimen/big_font" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/weather_icon_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@mipmap/ic_launcher_round" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/middle_padding">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/width_icon"
+                    android:layout_height="@dimen/height_icon"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/drop_icon" />
+
+                <TextView
+                    android:id="@+id/humidity_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="TextView" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/common_google_signin_btn_text_dark_focused" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/width_icon"
+                    android:layout_height="@dimen/height_icon"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/temp_icon" />
+
+                <TextView
+                    android:id="@+id/diapason_temp_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="TextView" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/common_google_signin_btn_text_dark_focused" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/width_icon"
+                    android:layout_height="@dimen/height_icon"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/wind_icon" />
+
+                <TextView
+                    android:id="@+id/wind_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+</FrameLayout>

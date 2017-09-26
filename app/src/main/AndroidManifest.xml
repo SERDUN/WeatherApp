@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screen.weatherScreen.WeatherActivity" />
+        <activity android:name=".screen.weatherScreen.WeatherDetailsActivity" />
         <activity android:name=".screen.cityChoiceScreen.CityChoiceActivity"></activity>
     </application>
 
