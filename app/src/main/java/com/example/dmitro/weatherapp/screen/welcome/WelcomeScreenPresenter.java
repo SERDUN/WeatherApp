@@ -1,4 +1,4 @@
-package com.example.dmitro.weatherapp.screen.welcomeScreen;
+package com.example.dmitro.weatherapp.screen.welcome;
 
 import android.content.Context;
 import android.location.Location;

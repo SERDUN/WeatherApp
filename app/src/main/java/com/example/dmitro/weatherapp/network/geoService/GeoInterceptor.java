@@ -1,10 +1,13 @@
 package com.example.dmitro.weatherapp.network.geoService;
 
 
+import android.content.res.Resources;
 import android.util.Log;
 
 
 import com.example.dmitro.weatherapp.BuildConfig;
+import com.example.dmitro.weatherapp.R;
+import com.example.dmitro.weatherapp.WeatherApp;
 
 import java.io.IOException;
 
@@ -23,7 +26,7 @@ public class GeoInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        HttpUrl url = request.url().newBuilder().addQueryParameter("key", BuildConfig.GOOGLE_MAP_KEY)
+        HttpUrl url = request.url().newBuilder().addQueryParameter("key",  WeatherApp.getInstance().getApplicationContext().getString(R.string.GOOGLE_MAP_KEY))
                 .addQueryParameter("format", "json").build();
         request = request.newBuilder().url(url).build();
         Log.d("test_iterapt", "intercept: "+request.url());

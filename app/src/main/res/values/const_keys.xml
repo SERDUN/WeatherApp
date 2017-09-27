@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="WEATHER_API_KEY">4ce02d1821ddb3a710139730aa0607ed</string>
+    <string name="BASE_WEATHER_URL">https://api.openweathermap.org/data/2.5/</string>
+    <string name="BASE_GEO_URL">https://maps.googleapis.com/</string>
+    <string name="GOOGLE_MAP_KEY">AIzaSyAZxqV1ilFNl6clsa55-TV59FNCH-pbteg</string>
+    <string name="ICON_WEATHER_URL">http://openweathermap.org/img/w/</string>
+</resources>

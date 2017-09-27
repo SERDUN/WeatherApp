@@ -1,11 +1,8 @@
-package com.example.dmitro.weatherapp.screen.welcomeScreen;
+package com.example.dmitro.weatherapp.screen.welcome;
 
-import android.content.Context;
 import android.location.Location;
-import android.os.Bundle;
 
 import com.example.dmitro.weatherapp.screen.BaseView;
-import com.google.android.gms.location.FusedLocationProviderClient;
 
 /**
  * Created by dmitro on 25.09.17.

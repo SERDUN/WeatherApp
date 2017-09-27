@@ -1,8 +1,11 @@
 package com.example.dmitro.weatherapp.data.repository.remote;
 
+import android.util.Log;
+
 import com.example.dmitro.weatherapp.data.model.geo.placeDetails.PlaceDetails;
 import com.example.dmitro.weatherapp.data.model.geo.places.Places;
 import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
+import com.example.dmitro.weatherapp.data.model.weather.many_day.ResponseManyDayWeather;
 import com.example.dmitro.weatherapp.data.repository.WeatherDataSource;
 import com.example.dmitro.weatherapp.network.geoService.GeoFactory;
 import com.example.dmitro.weatherapp.network.geoService.GeoService;
@@ -55,6 +58,25 @@ public class WeatherRemoteRepository implements WeatherDataSource {
 
             }
         });
+    }
+
+    @Override
+    public void getWeatherForFiveDay(double lat, double lon, Action1<ResponseManyDayWeather> success, Action1<Throwable> failure, Action0 complete) {
+        Call<ResponseManyDayWeather> response= WeatherFactory.getService().getWeatherForManyDay(lat,lon);
+
+        response.enqueue(new Callback<ResponseManyDayWeather>() {
+            @Override
+            public void onResponse(Call<ResponseManyDayWeather> call, Response<ResponseManyDayWeather> response) {
+                success.call(response.body());
+                complete.call();            }
+
+            @Override
+            public void onFailure(Call<ResponseManyDayWeather> call, Throwable t) {
+                failure.call(t);
+                complete.call();
+            }
+        });
+
     }
 
     @Override

@@ -1,7 +1,11 @@
 package com.example.dmitro.weatherapp.network.geoService;
 
 
+import android.content.res.Resources;
+
 import com.example.dmitro.weatherapp.BuildConfig;
+import com.example.dmitro.weatherapp.R;
+import com.example.dmitro.weatherapp.WeatherApp;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -32,7 +36,7 @@ public class GeoFactory {
 
     private static Retrofit getRetrofitBuilder() {
         return new Retrofit.Builder().client(getOkHttpClient())
-                .baseUrl(BuildConfig.BASE_GEO_URL)
+                .baseUrl( WeatherApp.getInstance().getApplicationContext().getString(R.string.BASE_GEO_URL))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

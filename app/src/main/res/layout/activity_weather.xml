@@ -4,20 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.dmitro.weatherapp.screen.weatherScreen.WeatherDetailsActivity">
+    tools:context="com.example.dmitro.weatherapp.screen.weather.WeatherDetailsActivity">
+
+    <ImageView
+        android:id="@+id/backg_weather_details_activity_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/background" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:orientation="vertical">
 
-
-        <FrameLayout
-            android:id="@+id/containerFragment"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/weather_details_tb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme">
 
-        </FrameLayout>
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+        </android.support.v7.widget.Toolbar>
+
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/fragment1"
+            android:name="com.example.dmitro.weatherapp.screen.weather.fragment.WeatherDetailsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_weather_details" />
+
+        <fragment
+            android:id="@+id/fragment2"
+            android:name="com.example.dmitro.weatherapp.screen.weather.fragment.WeatherListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:layout="@layout/activity_weather_list_fragment" />
     </LinearLayout>
 </FrameLayout>

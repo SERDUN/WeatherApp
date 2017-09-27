@@ -1,4 +1,4 @@
-package com.example.dmitro.weatherapp.screen.cityChoiceScreen.list;
+package com.example.dmitro.weatherapp.screen.select_city.list;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

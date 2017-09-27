@@ -8,7 +8,7 @@
     android:layout_centerHorizontal="true"
     android:layout_margin="10dp"
     android:orientation="vertical"
-    tools:context=".screen.cityChoiceScreen.CityChoiceActivity">
+    tools:context=".screen.select_city.CityChoiceActivity">
 
 
     <EditText

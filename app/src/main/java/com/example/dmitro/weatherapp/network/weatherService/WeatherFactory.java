@@ -1,6 +1,12 @@
 package com.example.dmitro.weatherapp.network.weatherService;
 
+import android.app.Application;
+import android.content.res.Resources;
+import android.util.Log;
+
 import com.example.dmitro.weatherapp.BuildConfig;
+import com.example.dmitro.weatherapp.R;
+import com.example.dmitro.weatherapp.WeatherApp;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -29,9 +35,9 @@ public class WeatherFactory {
 
 
     private static Retrofit getRetrofitBuilder() {
+        String url= WeatherApp.getInstance().getApplicationContext().getString(R.string.BASE_WEATHER_URL);
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_WEATHER_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(url).addConverterFactory(GsonConverterFactory.create())
                 .client(getOkHttpClient());
 
 

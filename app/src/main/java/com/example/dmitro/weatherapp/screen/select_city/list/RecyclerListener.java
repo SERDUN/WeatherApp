@@ -1,4 +1,4 @@
-package com.example.dmitro.weatherapp.screen.cityChoiceScreen.list;
+package com.example.dmitro.weatherapp.screen.select_city.list;
 
 import com.example.dmitro.weatherapp.data.model.geo.places.Prediction;
 

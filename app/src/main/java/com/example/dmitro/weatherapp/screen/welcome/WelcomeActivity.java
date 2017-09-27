@@ -1,4 +1,4 @@
-package com.example.dmitro.weatherapp.screen.welcomeScreen;
+package com.example.dmitro.weatherapp.screen.welcome;
 
 import android.Manifest;
 import android.content.Intent;
@@ -7,16 +7,19 @@ import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.dmitro.weatherapp.R;
-import com.example.dmitro.weatherapp.screen.cityChoiceScreen.CityChoiceActivity;
-import com.example.dmitro.weatherapp.screen.weatherScreen.WeatherDetailsActivity;
+import com.example.dmitro.weatherapp.screen.select_city.CityChoiceActivity;
+import com.example.dmitro.weatherapp.screen.weather.WeatherDetailsActivity;
+import com.example.dmitro.weatherapp.utils.MyUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 public class WelcomeActivity extends AppCompatActivity implements WelcomeScreenContract.WelcomeScreenView {
+    private final String LOG_TAG="WelcomeActivity_TAG";
     private WelcomeScreenContract.WelcomeScreenPresenter presenter;
     private FusedLocationProviderClient locationProviderClient;
 
@@ -25,6 +28,7 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeScreenC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        Log.d(LOG_TAG, "tag_day: : "+ MyUtil.getNameDayForDate("2017-09-27 00:00:00"));
         init();
     }
 

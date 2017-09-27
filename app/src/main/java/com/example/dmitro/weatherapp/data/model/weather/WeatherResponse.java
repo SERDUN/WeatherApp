@@ -38,9 +38,20 @@ public class WeatherResponse implements Serializable{
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("dt_txt")
+    @Expose
+    private String date;
     @SerializedName("cod")
     @Expose
     private Integer cod;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public Coord getCoord() {
         return coord;

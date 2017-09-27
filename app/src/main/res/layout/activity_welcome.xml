@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:layout_gravity="center"
     android:gravity="center"
-    tools:context="com.example.dmitro.weatherapp.screen.welcomeScreen.WelcomeActivity">
+    tools:context="com.example.dmitro.weatherapp.screen.welcome.WelcomeActivity">
 
     <Button
         android:id="@+id/current_weather_btn"

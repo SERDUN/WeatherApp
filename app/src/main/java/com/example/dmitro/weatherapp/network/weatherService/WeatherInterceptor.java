@@ -1,8 +1,11 @@
 package com.example.dmitro.weatherapp.network.weatherService;
 
+import android.content.res.Resources;
 import android.util.Log;
 
 import com.example.dmitro.weatherapp.BuildConfig;
+import com.example.dmitro.weatherapp.R;
+import com.example.dmitro.weatherapp.WeatherApp;
 
 import java.io.IOException;
 
@@ -20,7 +23,7 @@ public class WeatherInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        HttpUrl url = request.url().newBuilder().addQueryParameter("APPID", BuildConfig.API_KEY).build();
+        HttpUrl url = request.url().newBuilder().addQueryParameter("APPID", WeatherApp.getInstance().getApplicationContext().getString(R.string.WEATHER_API_KEY)).build();
         Log.d(LOG_WEATHER_INTERCEPTOR, "intercept: " + url.toString());
         request = request.newBuilder().url(url).build();
         return chain.proceed(request);

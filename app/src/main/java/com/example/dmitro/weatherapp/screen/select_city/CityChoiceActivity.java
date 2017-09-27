@@ -1,4 +1,4 @@
-package com.example.dmitro.weatherapp.screen.cityChoiceScreen;
+package com.example.dmitro.weatherapp.screen.select_city;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +13,8 @@ import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.geo.places.Places;
 import com.example.dmitro.weatherapp.data.model.geo.places.Prediction;
 import com.example.dmitro.weatherapp.screen.RecyclerViewEmptySupport;
-import com.example.dmitro.weatherapp.screen.cityChoiceScreen.list.CityChoiceRecyclerAdapter;
-import com.example.dmitro.weatherapp.screen.weatherScreen.WeatherDetailsActivity;
+import com.example.dmitro.weatherapp.screen.select_city.list.CityChoiceRecyclerAdapter;
+import com.example.dmitro.weatherapp.screen.weather.WeatherDetailsActivity;
 
 import java.util.ArrayList;
 

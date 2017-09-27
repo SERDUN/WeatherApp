@@ -1,4 +1,4 @@
-package com.example.dmitro.weatherapp.screen.cityChoiceScreen;
+package com.example.dmitro.weatherapp.screen.select_city;
 
 import com.example.dmitro.weatherapp.data.repository.WeatherRepositoryManager;
 import com.example.dmitro.weatherapp.utils.Injection;
