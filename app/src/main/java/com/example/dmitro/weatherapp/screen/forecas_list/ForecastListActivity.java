@@ -50,11 +50,11 @@ public class ForecastListActivity extends AppCompatActivity implements ForecastL
 
     @Override
     public void showWeather(ArrayList<WeatherResponse> weatherResponses) {
-int r=4;
+        weatherForecastRecyclerAdapter.updateData(weatherResponses);
     }
 
     @Override
     public void showDayInToolbar(String name) {
-int f=4;
+        int f = 4;
     }
 }

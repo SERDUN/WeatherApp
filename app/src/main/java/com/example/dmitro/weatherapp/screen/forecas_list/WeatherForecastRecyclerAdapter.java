@@ -31,8 +31,8 @@ public class WeatherForecastRecyclerAdapter extends RecyclerViewEmptySupport.Ada
         this.weather = weather;
     }
 
-    public void updateData(ArrayList<WeatherResponse> places) {
-        weather = places;
+    public void updateData(ArrayList<WeatherResponse> weather) {
+        this.weather = weather;
         notifyDataSetChanged();
 
     }
@@ -40,7 +40,7 @@ public class WeatherForecastRecyclerAdapter extends RecyclerViewEmptySupport.Ada
     @Override
     public WeatherForecastRecyclerAdapter.PlaceHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.place_item_view, parent, false);
+        View view = layoutInflater.inflate(R.layout.forecast_weather_item, parent, false);
         return new WeatherForecastRecyclerAdapter.PlaceHolder(view);
     }
 
