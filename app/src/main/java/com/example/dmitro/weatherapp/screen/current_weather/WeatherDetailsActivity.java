@@ -10,14 +10,18 @@ import android.renderscript.ScriptIntrinsicBlur;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
 import com.example.dmitro.weatherapp.screen.current_weather.fragment.WeatherDetailsFragment;
 import com.example.dmitro.weatherapp.screen.current_weather.fragment.WeatherListFragment;
+import com.example.dmitro.weatherapp.utils.MyUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +46,14 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
     @BindView(R.id.backg_weather_details_activity_iv)
     public ImageView backgroundWeather;
 
+
+    @BindView(R.id.weather_details_pb)
+    public ProgressBar progressBar;
+
+    @BindView(R.id.content_weather_details_lv)
+    public View contentView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +61,10 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
         ButterKnife.bind(this);
         Intent intent = getIntent();
         new WeatherScreenPresenter(intent.getDoubleExtra("lat", 0), intent.getDoubleExtra("lon", 0), this);
+        showProgresBar(true);
         init();
         initToolbar();
-        applyBlur();
-
+        MyUtil.applyBlur(backgroundWeather, this, BLUR_RADIUS);
 
     }
 
@@ -88,32 +100,11 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
         bundle.putSerializable(fragment.FRAGMENT_KEY, weatherResponse);
         fragment.setArguments(bundle);
         fragment.notifyField();
+        showProgresBar(false);
     }
 
     private static final float BLUR_RADIUS = 25f;
 
-    private void applyBlur() {
-        backgroundWeather.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                backgroundWeather.getViewTreeObserver().removeOnPreDrawListener(this);
-                backgroundWeather.buildDrawingCache();
-                Bitmap outputBitmap = backgroundWeather.getDrawingCache();
-                RenderScript renderScript = RenderScript.create(getBaseContext());
-                Allocation tmpIn = Allocation.createFromBitmap(renderScript, backgroundWeather.getDrawingCache());
-                Allocation tmpOut = Allocation.createFromBitmap(renderScript, outputBitmap);
-
-                ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
-                theIntrinsic.setRadius(BLUR_RADIUS);
-                theIntrinsic.setInput(tmpIn);
-                theIntrinsic.forEach(tmpOut);
-                tmpOut.copyTo(outputBitmap);
-                backgroundWeather.setImageBitmap(outputBitmap);
-
-                return true;
-            }
-        });
-    }
 
     @Override
     public void showCityNameInToolbar(String name) {
@@ -128,7 +119,26 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
         fragment.setArguments(bundle);
         fragment.notifyField();
 
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void showProgresBar(boolean is) {
+        if (is) {
+            progressBar.setVisibility(View.VISIBLE);
+            contentView.setVisibility(View.GONE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+            contentView.setVisibility(View.VISIBLE);
+        }
     }
 
 

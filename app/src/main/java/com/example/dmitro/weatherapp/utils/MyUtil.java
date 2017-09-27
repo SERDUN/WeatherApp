@@ -1,6 +1,14 @@
 package com.example.dmitro.weatherapp.utils;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
+import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 
 import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
 import com.example.dmitro.weatherapp.data.model.weather.many_day.ResponseManyDayWeather;
@@ -66,5 +74,28 @@ public class MyUtil {
     public static String createTemperatureDiapasonString(double T1, double T2) {
         return T1 + POSTFIX_BY_TEMP_CELSIUS + " - " + T2 + POSTFIX_BY_TEMP_CELSIUS;
 
+    }
+
+    public static void applyBlur(ImageView backgroundWeather, Context context, float radius) {
+        backgroundWeather.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                backgroundWeather.getViewTreeObserver().removeOnPreDrawListener(this);
+                backgroundWeather.buildDrawingCache();
+                Bitmap outputBitmap = backgroundWeather.getDrawingCache();
+                RenderScript renderScript = RenderScript.create(context);
+                Allocation tmpIn = Allocation.createFromBitmap(renderScript, backgroundWeather.getDrawingCache());
+                Allocation tmpOut = Allocation.createFromBitmap(renderScript, outputBitmap);
+
+                ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
+                theIntrinsic.setRadius(radius);
+                theIntrinsic.setInput(tmpIn);
+                theIntrinsic.forEach(tmpOut);
+                tmpOut.copyTo(outputBitmap);
+                backgroundWeather.setImageBitmap(outputBitmap);
+
+                return true;
+            }
+        });
     }
 }
