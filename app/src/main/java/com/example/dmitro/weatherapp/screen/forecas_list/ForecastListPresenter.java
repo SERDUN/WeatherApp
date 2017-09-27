@@ -5,7 +5,6 @@ import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,8 +30,7 @@ public class ForecastListPresenter implements ForecastListContract.Presenter {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             view.showDayInToolbar(pair.getKey().toString());
-            List<WeatherResponse> wdd=weather.get(pair.getKey().toString());
-            view.showWeather(null);
+            view.showWeather(weather.get(pair.getKey().toString()));
         }
 
     }
