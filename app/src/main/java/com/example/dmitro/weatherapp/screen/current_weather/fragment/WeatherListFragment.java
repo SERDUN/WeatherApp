@@ -1,5 +1,6 @@
-package com.example.dmitro.weatherapp.screen.weather.fragment;
+package com.example.dmitro.weatherapp.screen.current_weather.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
-import com.example.dmitro.weatherapp.data.model.weather.many_day.ResponseManyDayWeather;
+import com.example.dmitro.weatherapp.screen.forecas_list.ForecastListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,13 +37,13 @@ public class WeatherListFragment extends Fragment {
 
     public void notifyField() {
         if (getArguments() != null) {
-            LinkedList<HashMap<String, List<WeatherResponse>>> responseManyDayWeather = (LinkedList<HashMap<String, List<WeatherResponse>>>) getArguments().getSerializable(FRAGMENT_KEY);
+            ArrayList<HashMap<String, ArrayList<WeatherResponse>>> responseManyDayWeather = (ArrayList<HashMap<String, ArrayList<WeatherResponse>>>) getArguments().getSerializable(FRAGMENT_KEY);
             initAdapter(responseManyDayWeather);
 
         }
     }
 
-    private void initAdapter(LinkedList<HashMap<String, List<WeatherResponse>>> wr) {
+    private void initAdapter(ArrayList<HashMap<String, ArrayList<WeatherResponse>>> wr) {
         weatherRecyclerAdapter.updateData(wr);
 
     }
@@ -72,7 +73,11 @@ public class WeatherListFragment extends Fragment {
 
 
     private void initRecyclerView() {
-        weatherRecyclerAdapter = new WeatherRecyclerAdapter(new LinkedList<>());
+        weatherRecyclerAdapter = new WeatherRecyclerAdapter(new ArrayList<>(), dayWeather -> {
+            Intent intent = new Intent(getContext(), ForecastListActivity.class);
+            intent.putExtra(ForecastListActivity.KEY_WEATHER, (HashMap<String, ArrayList<WeatherResponse>>) dayWeather);
+            startActivity(intent);
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(weatherRecyclerAdapter);
 

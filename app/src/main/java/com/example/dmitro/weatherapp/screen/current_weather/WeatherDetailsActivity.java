@@ -1,4 +1,4 @@
-package com.example.dmitro.weatherapp.screen.weather;
+package com.example.dmitro.weatherapp.screen.current_weather;
 
 import android.content.Intent;
 
@@ -16,9 +16,10 @@ import android.widget.TextView;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
-import com.example.dmitro.weatherapp.screen.weather.fragment.WeatherDetailsFragment;
-import com.example.dmitro.weatherapp.screen.weather.fragment.WeatherListFragment;
+import com.example.dmitro.weatherapp.screen.current_weather.fragment.WeatherDetailsFragment;
+import com.example.dmitro.weatherapp.screen.current_weather.fragment.WeatherListFragment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -120,7 +121,7 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
     }
 
     @Override
-    public void showWeatherList(LinkedList<HashMap<String, List<WeatherResponse>>> responseManyDayWeather) {
+    public void showWeatherList(ArrayList<HashMap<String, ArrayList<WeatherResponse>>> responseManyDayWeather) {
         WeatherListFragment fragment = (WeatherListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment2);
         Bundle bundle = new Bundle();
         bundle.putSerializable(fragment.FRAGMENT_KEY, responseManyDayWeather);

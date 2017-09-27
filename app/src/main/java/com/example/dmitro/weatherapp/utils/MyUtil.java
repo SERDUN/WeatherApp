@@ -8,6 +8,7 @@ import com.example.dmitro.weatherapp.data.model.weather.many_day.ResponseManyDay
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,17 +39,17 @@ public class MyUtil {
         return null;
     }
 
-    public static final LinkedList<HashMap<String, List<WeatherResponse>>> groupByDays(ResponseManyDayWeather responseManyDayWeather) {
+    public static final ArrayList<HashMap<String, ArrayList<WeatherResponse>>> groupByDays(ResponseManyDayWeather responseManyDayWeather) {
         String currenDay = "";
-        LinkedList<WeatherResponse> weatherForDay = null;
-        HashMap<String, List<WeatherResponse>> currentHasMap = null;
-        LinkedList<HashMap<String, List<WeatherResponse>>> groupWeather = new LinkedList<>();
+        ArrayList<WeatherResponse> weatherForDay = null;
+        HashMap<String, ArrayList<WeatherResponse>> currentHasMap = null;
+        ArrayList<HashMap<String, ArrayList<WeatherResponse>>> groupWeather = new ArrayList<>();
 
 
         for (WeatherResponse weather : responseManyDayWeather.getList()) {
             if (currenDay.isEmpty() || !currenDay.equals(getNameDayForDate(weather.getDate()))) {
                 currenDay = getNameDayForDate(weather.getDate());
-                weatherForDay = new LinkedList<>();
+                weatherForDay = new ArrayList<>();
                 currentHasMap = new HashMap<>();
                 currentHasMap.put(currenDay, weatherForDay);
                 groupWeather.add(currentHasMap);

@@ -1,9 +1,9 @@
-package com.example.dmitro.weatherapp.screen.weather;
+package com.example.dmitro.weatherapp.screen.current_weather;
 
 import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
-import com.example.dmitro.weatherapp.data.model.weather.many_day.ResponseManyDayWeather;
 import com.example.dmitro.weatherapp.screen.BaseView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class WeatherScreenContract {
 
         public void showCityNameInToolbar(String name);
 
-        public void showWeatherList(LinkedList<HashMap<String, List<WeatherResponse>>> responseManyDayWeather);
+        public void showWeatherList(ArrayList<HashMap<String, ArrayList<WeatherResponse>>> responseManyDayWeather);
     }
 
     interface WeatherScreenPresenter {

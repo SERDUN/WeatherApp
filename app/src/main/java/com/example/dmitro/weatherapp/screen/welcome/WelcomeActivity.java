@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.screen.select_city.CityChoiceActivity;
-import com.example.dmitro.weatherapp.screen.weather.WeatherDetailsActivity;
+import com.example.dmitro.weatherapp.screen.current_weather.WeatherDetailsActivity;
 import com.example.dmitro.weatherapp.utils.MyUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;

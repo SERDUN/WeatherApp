@@ -14,7 +14,7 @@ import com.example.dmitro.weatherapp.data.model.geo.places.Places;
 import com.example.dmitro.weatherapp.data.model.geo.places.Prediction;
 import com.example.dmitro.weatherapp.screen.RecyclerViewEmptySupport;
 import com.example.dmitro.weatherapp.screen.select_city.list.CityChoiceRecyclerAdapter;
-import com.example.dmitro.weatherapp.screen.weather.WeatherDetailsActivity;
+import com.example.dmitro.weatherapp.screen.current_weather.WeatherDetailsActivity;
 
 import java.util.ArrayList;
 
@@ -49,7 +49,7 @@ public class CityChoiceActivity extends AppCompatActivity implements CityChoiceC
 
     private void initView() {
         cityChoiceRecyclerAdapter = new CityChoiceRecyclerAdapter(p -> {
-            presenter.getDetailsPlace(p.getPlaceId());
+            presenter.getDetailsPlace(((Prediction)p).getPlaceId());
         }, new ArrayList<>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setEmptyView(view);

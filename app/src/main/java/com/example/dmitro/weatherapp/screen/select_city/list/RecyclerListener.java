@@ -7,6 +7,6 @@ import com.example.dmitro.weatherapp.data.model.geo.places.Prediction;
  */
 
 public interface RecyclerListener {
-    public void onClick(Prediction prediction);
+    public void onClick(Object o);
 
 }

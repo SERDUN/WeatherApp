@@ -21,8 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screen.weather.WeatherDetailsActivity" />
+        <activity android:name=".screen.current_weather.WeatherDetailsActivity" />
         <activity android:name=".screen.select_city.CityChoiceActivity" />
+        <activity android:name=".screen.forecas_list.ForecastListActivity"></activity>
     </application>
 
 </manifest>

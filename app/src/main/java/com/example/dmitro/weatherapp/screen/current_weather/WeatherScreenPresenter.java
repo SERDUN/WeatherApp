@@ -1,4 +1,4 @@
-package com.example.dmitro.weatherapp.screen.weather;
+package com.example.dmitro.weatherapp.screen.current_weather;
 
 import com.example.dmitro.weatherapp.data.repository.WeatherRepositoryManager;
 import com.example.dmitro.weatherapp.utils.MyUtil;

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.dmitro.weatherapp.screen.weather.fragment.FailureFragment">
+    tools:context="com.example.dmitro.weatherapp.screen.current_weather.fragment.FailureFragment">
 
 
     <TextView
