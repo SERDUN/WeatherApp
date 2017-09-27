@@ -13,17 +13,28 @@ import java.util.HashMap;
 public class WeatherScreenContract {
     interface WeatherScreenView extends BaseView<WeatherScreenPresenter> {
 
+        public void showProgressBar(boolean show);
+
+
+
+        public void showContent(boolean show);
+
         public void showWeatherDetails(WeatherResponse response);
 
         public void showCityNameInToolbar(String name);
+
+        public void showFailure();
 
         public void showWeatherList(ArrayList<HashMap<String, ArrayList<WeatherResponse>>> responseManyDayWeather);
     }
 
     interface WeatherScreenPresenter {
+        void init();
+
         public void getWeather();
 
         public void getWeatherForFiveDays();
+
 
     }
 }

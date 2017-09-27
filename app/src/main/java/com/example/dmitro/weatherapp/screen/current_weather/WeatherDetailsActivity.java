@@ -3,7 +3,6 @@ package com.example.dmitro.weatherapp.screen.current_weather;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,6 +14,7 @@ import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
 import com.example.dmitro.weatherapp.screen.current_weather.fragment.WeatherDetailsFragment;
 import com.example.dmitro.weatherapp.screen.current_weather.fragment.WeatherListFragment;
+import com.example.dmitro.weatherapp.screen.failure.FailureDialog;
 import com.example.dmitro.weatherapp.utils.MyUtil;
 
 import java.util.ArrayList;
@@ -51,6 +51,8 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
     @BindView(R.id.back_btn)
     public ImageButton backButton;
 
+    private FailureDialog failureDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,6 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
         ButterKnife.bind(this);
         Intent intent = getIntent();
         new WeatherScreenPresenter(intent.getDoubleExtra("lat", 0), intent.getDoubleExtra("lon", 0), this);
-        showProgressBar(true);
         init();
         initToolbar();
         MyUtil.applyBlur(backgroundWeather, this, BLUR_RADIUS);
@@ -73,6 +74,14 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
     }
 
     private void init() {
+        failureDialog = new FailureDialog();
+        failureDialog.setCallback(() -> {
+            failureDialog.dismiss();
+            presenter.getWeather();
+            presenter.getWeatherForFiveDays();
+        });
+
+        presenter.init();
         presenter.getWeather();
         presenter.getWeatherForFiveDays();
 
@@ -86,13 +95,35 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
     }
 
     @Override
+    public void showProgressBar(boolean show) {
+        if (show) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+
+        }
+    }
+
+
+    @Override
+    public void showContent(boolean show) {
+        if (show) {
+            contentView.setVisibility(View.VISIBLE);
+        } else {
+            contentView.setVisibility(View.GONE);
+
+        }
+
+    }
+
+
+    @Override
     public void showWeatherDetails(WeatherResponse weatherResponse) {
         WeatherDetailsFragment fragment = (WeatherDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment1);
         Bundle bundle = new Bundle();
         bundle.putSerializable(fragment.FRAGMENT_KEY, weatherResponse);
         fragment.setArguments(bundle);
         fragment.notifyField();
-        showProgressBar(false);
     }
 
     private static final float BLUR_RADIUS = 25f;
@@ -101,6 +132,13 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
     @Override
     public void showCityNameInToolbar(String name) {
         title_tv.setText(name);
+    }
+
+    @Override
+    public void showFailure() {
+        contentView.setVisibility(View.GONE);
+        failureDialog.show(getSupportFragmentManager(), LOG_WEATHER_ACTIVITY);
+
     }
 
     @Override
@@ -119,16 +157,6 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
             finish();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void showProgressBar(boolean is) {
-        if (is) {
-            progressBar.setVisibility(View.VISIBLE);
-            contentView.setVisibility(View.GONE);
-        } else {
-            progressBar.setVisibility(View.GONE);
-            contentView.setVisibility(View.VISIBLE);
-        }
     }
 
 

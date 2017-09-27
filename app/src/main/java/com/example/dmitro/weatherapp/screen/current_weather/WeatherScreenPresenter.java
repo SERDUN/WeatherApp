@@ -23,12 +23,22 @@ public class WeatherScreenPresenter implements WeatherScreenContract.WeatherScre
     }
 
     @Override
+    public void init() {
+        view.showProgressBar(true);
+        view.showContent(false);
+    }
+
+    @Override
     public void getWeather() {
         weatherRepositoryManager.getCurrentWeather(this.lat, this.lon, s -> {
             view.showWeatherDetails(s);
             view.showCityNameInToolbar(s.getName());
+            view.showContent(true);
         }, f -> {
+            view.showFailure();
+            view.showContent(false);
         }, () -> {
+            view.showProgressBar(false);
         });
 
     }
@@ -41,4 +51,6 @@ public class WeatherScreenPresenter implements WeatherScreenContract.WeatherScre
         }, () -> {
         });
     }
+
+
 }
