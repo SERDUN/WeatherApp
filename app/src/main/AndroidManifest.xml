@@ -22,7 +22,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".screen.current_weather.WeatherDetailsActivity" />
-        <activity android:name=".screen.select_city.CityChoiceActivity" />
+        <activity
+            android:name=".screen.select_city.CityChoiceActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan"/>
+
         <activity android:name=".screen.forecas_list.ForecastListActivity"></activity>
     </application>
 

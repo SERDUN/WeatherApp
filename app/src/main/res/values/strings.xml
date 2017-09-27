@@ -7,7 +7,8 @@
     <string name="pressure">Pressure</string>
     <string name="humidity">Humidity</string>
     <string name="temperature">Temperature</string>
-    <string name="empty_text">list is empty, enter a place name</string>
+    <string name="empty_text">list is empty, enter a place nam</string>
+    <string name="empty_input_place_text">Place</string>
     <string name="enter_place">list is empty, enter a place name</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>

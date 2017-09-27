@@ -1,5 +1,6 @@
 package com.example.dmitro.weatherapp.screen.select_city;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.geo.places.Places;
@@ -24,8 +27,12 @@ import butterknife.ButterKnife;
 public class CityChoiceActivity extends AppCompatActivity implements CityChoiceContract.View {
     @BindView(R.id.places_et)
     public EditText placeEditText;
+
     @BindView(R.id.places_rv)
     public RecyclerViewEmptySupport recyclerView;
+
+    @BindView(R.id.back_city_choice_btn)
+    public ImageButton backButton;
 
     @BindView(R.id.empty_text_view)
     View view;
@@ -48,7 +55,7 @@ public class CityChoiceActivity extends AppCompatActivity implements CityChoiceC
 
     private void initView() {
         cityChoiceRecyclerAdapter = new CityChoiceRecyclerAdapter(p -> {
-            presenter.getDetailsPlace(((Prediction)p).getPlaceId());
+            presenter.getDetailsPlace(((Prediction) p).getPlaceId());
         }, new ArrayList<>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setEmptyView(view);
@@ -70,16 +77,12 @@ public class CityChoiceActivity extends AppCompatActivity implements CityChoiceC
 
             }
         });
+        backButton.setOnClickListener(view1 -> {
+            onBackPressed();
+        });
     }
 
 
-    public void onClick(View view){
-        switch (view.getId()){
-            case R.id.search_btn:
-                placeEditText.setVisibility(View.VISIBLE);
-                break;
-        }
-    }
     @Override
     public void setPresenter(CityChoiceContract.Presenter presenter) {
         this.presenter = presenter;
