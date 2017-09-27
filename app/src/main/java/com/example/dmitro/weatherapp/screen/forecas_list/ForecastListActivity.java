@@ -32,7 +32,7 @@ public class ForecastListActivity extends AppCompatActivity implements ForecastL
         ButterKnife.bind(this);
         initView();
         Intent intent = getIntent();
-        new ForecastListPresenter((HashMap<String, LinkedList<WeatherResponse>>) intent.getSerializableExtra(KEY_WEATHER), this);
+        new ForecastListPresenter((HashMap<String, ArrayList<WeatherResponse>>) intent.getSerializableExtra(KEY_WEATHER), this);
         presenter.init();
     }
 
@@ -49,7 +49,7 @@ public class ForecastListActivity extends AppCompatActivity implements ForecastL
     }
 
     @Override
-    public void showWeather(LinkedList<WeatherResponse> weatherResponses) {
+    public void showWeather(ArrayList<WeatherResponse> weatherResponses) {
 int r=4;
     }
 

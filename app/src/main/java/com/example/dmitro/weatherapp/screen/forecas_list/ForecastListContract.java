@@ -5,6 +5,7 @@ import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
 import com.example.dmitro.weatherapp.screen.BasePresenter;
 import com.example.dmitro.weatherapp.screen.BaseView;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -13,7 +14,7 @@ import java.util.LinkedList;
 
 public class ForecastListContract {
     public interface View extends BaseView<ForecastListContract.Presenter> {
-        public void showWeather(LinkedList<WeatherResponse> weatherResponses);
+        public void showWeather(ArrayList<WeatherResponse> weatherResponses);
 
         public void showDayInToolbar(String name);
 
