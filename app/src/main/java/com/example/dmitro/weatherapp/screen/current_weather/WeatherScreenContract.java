@@ -5,8 +5,6 @@ import com.example.dmitro.weatherapp.screen.BaseView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by dmitro on 25.09.17.

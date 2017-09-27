@@ -19,8 +19,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import static com.example.dmitro.weatherapp.screen.current_weather.fragment.WeatherDetailsFragment.POSTFIX_BY_ICON_URL;

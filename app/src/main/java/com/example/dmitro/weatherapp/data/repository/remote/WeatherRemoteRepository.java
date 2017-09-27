@@ -1,14 +1,11 @@
 package com.example.dmitro.weatherapp.data.repository.remote;
 
-import android.util.Log;
-
 import com.example.dmitro.weatherapp.data.model.geo.placeDetails.PlaceDetails;
 import com.example.dmitro.weatherapp.data.model.geo.places.Places;
 import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
 import com.example.dmitro.weatherapp.data.model.weather.many_day.ResponseManyDayWeather;
 import com.example.dmitro.weatherapp.data.repository.WeatherDataSource;
 import com.example.dmitro.weatherapp.network.geoService.GeoFactory;
-import com.example.dmitro.weatherapp.network.geoService.GeoService;
 import com.example.dmitro.weatherapp.network.weatherService.WeatherFactory;
 import com.example.dmitro.weatherapp.utils.callback.Action0;
 import com.example.dmitro.weatherapp.utils.callback.Action1;

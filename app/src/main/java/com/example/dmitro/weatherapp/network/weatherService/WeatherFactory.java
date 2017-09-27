@@ -1,10 +1,5 @@
 package com.example.dmitro.weatherapp.network.weatherService;
 
-import android.app.Application;
-import android.content.res.Resources;
-import android.util.Log;
-
-import com.example.dmitro.weatherapp.BuildConfig;
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.WeatherApp;
 

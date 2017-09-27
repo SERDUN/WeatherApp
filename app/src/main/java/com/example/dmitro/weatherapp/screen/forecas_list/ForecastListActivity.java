@@ -1,21 +1,18 @@
 package com.example.dmitro.weatherapp.screen.forecas_list;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
-import com.example.dmitro.weatherapp.screen.current_weather.fragment.WeatherRecyclerAdapter;
 import com.example.dmitro.weatherapp.utils.MyUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

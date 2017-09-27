@@ -1,8 +1,8 @@
 package com.example.dmitro.weatherapp.screen.select_city;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,8 +13,8 @@ import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.geo.places.Places;
 import com.example.dmitro.weatherapp.data.model.geo.places.Prediction;
 import com.example.dmitro.weatherapp.screen.RecyclerViewEmptySupport;
-import com.example.dmitro.weatherapp.screen.select_city.list.CityChoiceRecyclerAdapter;
 import com.example.dmitro.weatherapp.screen.current_weather.WeatherDetailsActivity;
+import com.example.dmitro.weatherapp.screen.select_city.list.CityChoiceRecyclerAdapter;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CityChoiceActivity extends AppCompatActivity implements CityChoiceContract.View {
-
     @BindView(R.id.places_et)
     public EditText placeEditText;
     @BindView(R.id.places_rv)
@@ -73,6 +72,14 @@ public class CityChoiceActivity extends AppCompatActivity implements CityChoiceC
         });
     }
 
+
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.search_btn:
+                placeEditText.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
     @Override
     public void setPresenter(CityChoiceContract.Presenter presenter) {
         this.presenter = presenter;

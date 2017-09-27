@@ -10,10 +10,8 @@ import android.widget.TextView;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.WeatherApp;
-import com.example.dmitro.weatherapp.data.model.geo.places.Prediction;
 import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
 import com.example.dmitro.weatherapp.screen.RecyclerViewEmptySupport;
-import com.example.dmitro.weatherapp.screen.select_city.list.RecyclerListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

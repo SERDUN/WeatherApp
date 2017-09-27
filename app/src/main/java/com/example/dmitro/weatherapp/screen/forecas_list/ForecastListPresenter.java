@@ -5,7 +5,6 @@ import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -21,7 +20,6 @@ public class ForecastListPresenter implements ForecastListContract.Presenter {
         this.view = view;
         view.setPresenter(this);
     }
-
 
 
     @Override

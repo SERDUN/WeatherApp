@@ -15,8 +15,6 @@ import com.example.dmitro.weatherapp.screen.forecas_list.ForecastListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

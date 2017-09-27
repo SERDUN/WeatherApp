@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="middle_padding">20dp</dimen>
+    <dimen name="big_padding">30dp</dimen>
     <dimen name="big_font">30dp</dimen>
+    <dimen name="middle_font">25dp</dimen>
     <dimen name="width_icon">32dp</dimen>
     <dimen name="height_icon">32dp</dimen>
 

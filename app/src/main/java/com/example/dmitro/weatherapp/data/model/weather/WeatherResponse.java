@@ -1,10 +1,11 @@
 
 package com.example.dmitro.weatherapp.data.model.weather;
 
-import java.io.Serializable;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class WeatherResponse implements Serializable{
 

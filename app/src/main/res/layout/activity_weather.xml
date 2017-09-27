@@ -20,7 +20,7 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 
     <LinearLayout
@@ -29,23 +29,37 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
-        <android.support.v7.widget.Toolbar
+        <LinearLayout
+            android:background="#1338288e"
+            android:layout_marginBottom="@dimen/middle_padding"
             android:id="@+id/weather_details_tb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme">
 
+            <ImageButton
+                android:paddingLeft="@dimen/middle_padding"
+                android:id="@+id/back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                app:srcCompat="@drawable/ic_keyboard_backspace_black_24dp" />
+
             <TextView
                 android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:paddingRight="@dimen/middle_padding"
+                android:gravity="center"
+                android:text="test"
+                android:textColor="@color/colorTitle"
+                android:textSize="@dimen/middle_font" />
 
-        </android.support.v7.widget.Toolbar>
+        </LinearLayout>
 
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -61,6 +75,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:layout="@layout/activity_weather_list_fragment" />
+            tools:layout="@layout/fragment_weather_list" />
     </LinearLayout>
 </FrameLayout>

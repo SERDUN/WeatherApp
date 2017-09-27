@@ -1,9 +1,6 @@
 package com.example.dmitro.weatherapp.network.geoService;
 
 
-import android.content.res.Resources;
-
-import com.example.dmitro.weatherapp.BuildConfig;
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.WeatherApp;
 
