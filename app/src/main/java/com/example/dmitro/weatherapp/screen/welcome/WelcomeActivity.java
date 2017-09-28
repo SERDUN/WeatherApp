@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class WelcomeActivity extends AppCompatActivity implements WelcomeScreenContract.WelcomeScreenView {
     private final String LOG_TAG = "WelcomeActivity_TAG";
@@ -61,8 +63,6 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeScreenC
     private void init() {
         presenter = new WelcomeScreenPresenter(this, this);
         locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-
     }
 
 
@@ -116,46 +116,11 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeScreenC
             public boolean onPreDraw() {
                 background.getViewTreeObserver().removeOnPreDrawListener(this);
                 background.buildDrawingCache();
-
-                Bitmap bmp = background.getDrawingCache();
-                blur(bmp, currentWeatherButton);
+                MyUtil.blur(background, getBaseContext(), currentWeatherButton);
                 return true;
             }
         });
     }
 
-    private void blur(Bitmap bkg, View view) {
 
-        float radius = 20;
-        int width = (int) (view.getMeasuredWidth());
-        int height = (int) (view.getMeasuredHeight());
-
-        Bitmap overlay = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-        Canvas canvas = new Canvas(overlay);
-
-        canvas.translate(-view.getLeft(), -view.getTop());
-        canvas.drawBitmap(bkg, 0, 0, null);
-
-        RenderScript rs = RenderScript.create(getBaseContext());
-
-        Allocation overlayAlloc = Allocation.createFromBitmap(
-                rs, overlay);
-
-        ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(
-                rs, overlayAlloc.getElement());
-
-        blur.setInput(overlayAlloc);
-
-        blur.setRadius(radius);
-
-        blur.forEach(overlayAlloc);
-
-        overlayAlloc.copyTo(overlay);
-
-        view.setBackground(new BitmapDrawable(
-                getResources(), overlay));
-
-        rs.destroy();
-    }
 }

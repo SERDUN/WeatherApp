@@ -65,9 +65,11 @@
                 android:layout_height="match_parent" />
 
             <TextView
-                android:background="#b1ffffff"
-                android:layout_marginTop="@dimen/middle_font"
-                android:textSize="@dimen/big_font"
+                android:background="#4ba4a3a3"
+                android:textColor="@color/colorTitle"
+
+                android:layout_marginTop="@dimen/double_big_padding"
+                android:textSize="@dimen/middle_font"
                 android:id="@+id/empty_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

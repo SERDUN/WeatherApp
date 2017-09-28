@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.example.dmitro.weatherapp.R;
@@ -19,7 +20,6 @@ import butterknife.ButterKnife;
 
 public class ForecastListActivity extends AppCompatActivity implements ForecastListContract.View {
     public final static String KEY_WEATHER = "ForecastListActivityWeather";
-    private static final float BLUR_RADIUS = 25;
 
     @BindView(R.id.forecast_weather_rv)
     RecyclerView recyclerView;
@@ -36,11 +36,22 @@ public class ForecastListActivity extends AppCompatActivity implements ForecastL
         setContentView(R.layout.activity_forecas_list);
         ButterKnife.bind(this);
         initView();
-        MyUtil.applyBlur(backgroundWeather, this, BLUR_RADIUS);
-
+        applyBlur();
         Intent intent = getIntent();
         new ForecastListPresenter((HashMap<String, ArrayList<WeatherResponse>>) intent.getSerializableExtra(KEY_WEATHER), this);
         presenter.init();
+    }
+
+    private void applyBlur() {
+        backgroundWeather.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                backgroundWeather.getViewTreeObserver().removeOnPreDrawListener(this);
+                MyUtil.blur(backgroundWeather, getBaseContext());
+                return true;
+            }
+        });
+
     }
 
     private void initView() {

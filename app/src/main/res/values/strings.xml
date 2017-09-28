@@ -14,4 +14,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="yes">Ok</string>
     <string name="message_text">Failure, repeat ?</string>
+
+    <string name="lat">lat</string>
+    <string name="lon">lon</string>
 </resources>

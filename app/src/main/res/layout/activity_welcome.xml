@@ -15,10 +15,10 @@
         app:srcCompat="@drawable/background" />
 
     <LinearLayout
-        android:layout_gravity="center"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="vertical">
 
         <Button
@@ -28,7 +28,8 @@
             android:layout_marginTop="@dimen/big_padding"
             android:background="#00ffffff"
             android:onClick="onClick"
-            android:text="@string/show_current_weather" />
+            android:text="@string/show_current_weather"
+            android:textColor="@color/colorTitle" />
 
         <Button
             android:id="@+id/search_city_btn"
@@ -37,7 +38,8 @@
             android:layout_marginTop="@dimen/big_padding"
             android:background="#00ffffff"
             android:onClick="onClick"
-            android:text="@string/search_weather" />
+            android:text="@string/search_weather"
+            android:textColor="@color/colorTitle" />
 
     </LinearLayout>
 

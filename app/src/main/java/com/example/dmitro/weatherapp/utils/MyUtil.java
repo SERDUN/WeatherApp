@@ -2,10 +2,13 @@ package com.example.dmitro.weatherapp.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
@@ -28,6 +31,8 @@ import java.util.Locale;
 public class MyUtil {
     private static final String FORMAT = "yyyy-MM-dd";
     public static final String POSTFIX_BY_TEMP_CELSIUS = "°";
+    private static final float BLUR_RADIUS = 25;
+
 
 
     public static String getNameDayForDate(String date) {
@@ -73,26 +78,55 @@ public class MyUtil {
 
     }
 
-    public static void applyBlur(ImageView backgroundWeather, Context context, float radius) {
-        backgroundWeather.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                backgroundWeather.getViewTreeObserver().removeOnPreDrawListener(this);
-                backgroundWeather.buildDrawingCache();
-                Bitmap outputBitmap = backgroundWeather.getDrawingCache();
-                RenderScript renderScript = RenderScript.create(context);
-                Allocation tmpIn = Allocation.createFromBitmap(renderScript, backgroundWeather.getDrawingCache());
-                Allocation tmpOut = Allocation.createFromBitmap(renderScript, outputBitmap);
+    public static void blur(ImageView backgroundWeather, Context context) {
+        backgroundWeather.buildDrawingCache();
+        Bitmap outputBitmap = backgroundWeather.getDrawingCache();
+        RenderScript renderScript = RenderScript.create(context);
+        Allocation tmpIn = Allocation.createFromBitmap(renderScript, backgroundWeather.getDrawingCache());
+        Allocation tmpOut = Allocation.createFromBitmap(renderScript, outputBitmap);
 
-                ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
-                theIntrinsic.setRadius(radius);
-                theIntrinsic.setInput(tmpIn);
-                theIntrinsic.forEach(tmpOut);
-                tmpOut.copyTo(outputBitmap);
-                backgroundWeather.setImageBitmap(outputBitmap);
-
-                return true;
-            }
-        });
+        ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
+        theIntrinsic.setRadius(BLUR_RADIUS);
+        theIntrinsic.setInput(tmpIn);
+        theIntrinsic.forEach(tmpOut);
+        tmpOut.copyTo(outputBitmap);
+        backgroundWeather.setImageBitmap(outputBitmap);
     }
+
+
+    public static void blur(ImageView background, Context context, View view) {
+        Bitmap bkg = background.getDrawingCache();
+
+        int width = (int) (view.getMeasuredWidth());
+        int height = (int) (view.getMeasuredHeight());
+
+        Bitmap overlay = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(overlay);
+
+        canvas.translate(-view.getLeft(), -view.getTop());
+        canvas.drawBitmap(bkg, 0, 0, null);
+
+        RenderScript rs = RenderScript.create(context);
+
+        Allocation overlayAlloc = Allocation.createFromBitmap(
+                rs, overlay);
+
+        ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(
+                rs, overlayAlloc.getElement());
+
+        blur.setInput(overlayAlloc);
+
+        blur.setRadius(BLUR_RADIUS);
+
+        blur.forEach(overlayAlloc);
+
+        overlayAlloc.copyTo(overlay);
+
+        view.setBackground(new BitmapDrawable(context.getResources(), overlay));
+
+        rs.destroy();
+    }
+
+
 }

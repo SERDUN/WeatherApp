@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -28,11 +29,7 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
     private final String LOG_WEATHER_ACTIVITY = "WeatherDetailsActivity";
 
     private WeatherScreenContract.WeatherScreenPresenter presenter;
-//
-//    @BindView(R.id.weather_details_tb)
-//    public Toolbar toolbar;
 
-    public TextView cityNameByToolbar;
 
     @BindView(R.id.toolbar_title)
     public TextView title_tv;
@@ -60,10 +57,22 @@ public class WeatherDetailsActivity extends AppCompatActivity implements Weather
         setContentView(R.layout.activity_weather);
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        new WeatherScreenPresenter(intent.getDoubleExtra("lat", 0), intent.getDoubleExtra("lon", 0), this);
+        new WeatherScreenPresenter(intent.getDoubleExtra(getString(R.string.lat), 0), intent.getDoubleExtra(getString(R.string.lat), 0), this);
         init();
         initToolbar();
-        MyUtil.applyBlur(backgroundWeather, this, BLUR_RADIUS);
+        applyBlur();
+    }
+
+
+    private void applyBlur() {
+        backgroundWeather.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                backgroundWeather.getViewTreeObserver().removeOnPreDrawListener(this);
+                MyUtil.blur(backgroundWeather, getBaseContext());
+                return true;
+            }
+        });
 
     }
 
