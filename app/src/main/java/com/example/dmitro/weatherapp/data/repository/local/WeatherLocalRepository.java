@@ -2,7 +2,7 @@ package com.example.dmitro.weatherapp.data.repository.local;
 
 import com.example.dmitro.weatherapp.data.model.geo.placeDetails.PlaceDetails;
 import com.example.dmitro.weatherapp.data.model.geo.places.Places;
-import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
+import com.example.dmitro.weatherapp.data.model.weather.current.WeatherResponse;
 import com.example.dmitro.weatherapp.data.model.weather.many_day.ResponseManyDayWeather;
 import com.example.dmitro.weatherapp.data.repository.WeatherDataSource;
 import com.example.dmitro.weatherapp.utils.callback.Action0;
@@ -13,6 +13,16 @@ import com.example.dmitro.weatherapp.utils.callback.Action1;
  */
 
 public class WeatherLocalRepository implements WeatherDataSource {
+    @Override
+    public WeatherResponse getCacheWeather() {
+        return null;
+    }
+
+    @Override
+    public ResponseManyDayWeather getCacheManyDayWeather() {
+        return null;
+    }
+
     @Override
     public void getCurrentWeather(double lat, double lon, Action1<WeatherResponse> success, Action1<Throwable> failure, Action0 complete) {
 

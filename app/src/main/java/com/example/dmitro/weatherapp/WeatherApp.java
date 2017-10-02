@@ -3,6 +3,7 @@ package com.example.dmitro.weatherapp;
 import android.app.Application;
 import android.content.Context;
 
+
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -21,6 +22,8 @@ public class WeatherApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+//        Realm.init(this);
+
         CalligraphyConfig.initDefault(
                 new CalligraphyConfig.Builder()
                         .setDefaultFontPath("fonts/calibri.ttf")

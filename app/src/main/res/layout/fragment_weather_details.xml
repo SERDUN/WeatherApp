@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="com.example.dmitro.weatherapp.screen.current_weather.fragment.WeatherDetailsFragment">
+    tools:context="com.example.dmitro.weatherapp.screen.weather.fragment.WeatherCurrentDetailsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

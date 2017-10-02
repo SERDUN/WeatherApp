@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.dmitro.weatherapp.screen.current_weather.WeatherDetailsActivity">
+    android:id="@+id/weather_details_fragment"
+    >
 
 
     <ImageView
@@ -15,11 +16,11 @@
         app:srcCompat="@drawable/background" />
 
     <ProgressBar
-        android:layout_gravity="center"
         android:id="@+id/weather_details_pb"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:visibility="gone" />
 
 
@@ -28,53 +29,71 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:background="#1338288e"
-            android:layout_marginBottom="@dimen/middle_padding"
-            android:id="@+id/weather_details_tb"
+        <!--<LinearLayout-->
+        <!--android:background="#1338288e"-->
+        <!--android:layout_marginBottom="@dimen/middle_padding"-->
+        <!--android:id="@+id/weather_details_tb"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:minHeight="?attr/actionBarSize"-->
+        <!--android:theme="?attr/actionBarTheme">-->
+
+        <!--<ImageButton-->
+        <!--android:paddingLeft="@dimen/middle_padding"-->
+        <!--android:id="@+id/back_btn"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="#00000000"-->
+        <!--app:srcCompat="@drawable/ic_keyboard_backspace_black_24dp" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/toolbar_title"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:paddingRight="@dimen/middle_padding"-->
+        <!--android:gravity="center"-->
+        <!--android:text="test"-->
+        <!--android:textColor="@color/colorTitle"-->
+        <!--android:textSize="@dimen/middle_font" />-->
+
+        <!--</LinearLayout>-->
+
+
+        <include
+            layout="@layout/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme">
-
-            <ImageButton
-                android:paddingLeft="@dimen/middle_padding"
-                android:id="@+id/back_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="#00000000"
-                app:srcCompat="@drawable/ic_keyboard_backspace_black_24dp" />
-
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingRight="@dimen/middle_padding"
-                android:gravity="center"
-                android:text="test"
-                android:textColor="@color/colorTitle"
-                android:textSize="@dimen/middle_font" />
-
-        </LinearLayout>
+            android:layout_height="wrap_content" />
 
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        <fragment
             android:id="@+id/fragment1"
-            android:name="com.example.dmitro.weatherapp.screen.current_weather.fragment.WeatherDetailsFragment"
+            android:name="com.example.dmitro.weatherapp.screen.weather.fragment.WeatherCurrentDetailsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:layout="@layout/fragment_weather_details" />
 
         <fragment
             android:id="@+id/fragment2"
-            android:name="com.example.dmitro.weatherapp.screen.current_weather.fragment.WeatherListFragment"
+            android:name="com.example.dmitro.weatherapp.screen.weather.fragment.WeatherListFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             tools:layout="@layout/fragment_weather_list" />
+
+        <!--<FrameLayout-->
+        <!--android:id="@+id/container1"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
+
+        <!--<FrameLayout-->
+        <!--android:layout_weight="1"-->
+        <!--android:id="@+id/container2"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
+
+
     </LinearLayout>
 </FrameLayout>

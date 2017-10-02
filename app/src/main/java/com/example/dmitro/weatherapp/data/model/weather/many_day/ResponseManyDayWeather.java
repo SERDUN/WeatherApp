@@ -1,7 +1,7 @@
 package com.example.dmitro.weatherapp.data.model.weather.many_day;
 
 import com.example.dmitro.weatherapp.data.model.weather.City;
-import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
+import com.example.dmitro.weatherapp.data.model.weather.current.WeatherResponse;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

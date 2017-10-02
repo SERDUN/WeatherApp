@@ -9,10 +9,9 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
-import com.example.dmitro.weatherapp.data.model.weather.WeatherResponse;
+import com.example.dmitro.weatherapp.data.model.weather.current.WeatherResponse;
 import com.example.dmitro.weatherapp.data.model.weather.many_day.ResponseManyDayWeather;
 
 import java.text.DateFormat;
@@ -34,7 +33,6 @@ public class MyUtil {
     private static final float BLUR_RADIUS = 25;
 
 
-
     public static String getNameDayForDate(String date) {
         try {
             DateFormat dateFormat = new SimpleDateFormat(FORMAT);
@@ -48,6 +46,9 @@ public class MyUtil {
 
         return null;
     }
+
+
+
 
     public static final ArrayList<HashMap<String, ArrayList<WeatherResponse>>> groupByDays(ResponseManyDayWeather responseManyDayWeather) {
         String currenDay = "";
@@ -128,5 +129,19 @@ public class MyUtil {
         rs.destroy();
     }
 
+
+    public static Bitmap takeScreenShot(View view) {
+        view.setDrawingCacheEnabled(true);
+        view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+        view.buildDrawingCache();
+
+        if(view.getDrawingCache() == null) return null;
+
+        Bitmap snapshot = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(false);
+        view.destroyDrawingCache();
+
+        return snapshot;
+    }
 
 }

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#14ffffff"
 
-    tools:context="com.example.dmitro.weatherapp.screen.current_weather.fragment.WeatherListFragment">
+    tools:context="com.example.dmitro.weatherapp.screen.weather.fragment.WeatherListFragment">
 
 
     <android.support.v7.widget.RecyclerView
