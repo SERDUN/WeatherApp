@@ -3,7 +3,6 @@ package com.example.dmitro.weatherapp;
 import android.app.Application;
 import android.content.Context;
 
-
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 

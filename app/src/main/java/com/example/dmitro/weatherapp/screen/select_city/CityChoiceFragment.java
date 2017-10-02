@@ -1,8 +1,6 @@
 package com.example.dmitro.weatherapp.screen.select_city;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,10 +9,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.geo.places.Places;
@@ -42,8 +38,6 @@ public class CityChoiceFragment extends Fragment implements CityChoiceContract.V
     @BindView(R.id.back_city_choice_btn)
     public ImageButton backButton;
 
-//    @BindView(R.id.empty_text_view)
-//    TextView view;
 
     private CityChoiceRecyclerAdapter cityChoiceRecyclerAdapter;
 
@@ -72,8 +66,6 @@ public class CityChoiceFragment extends Fragment implements CityChoiceContract.V
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_city_choice, container, false);
-//        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-
         ButterKnife.bind(this, view);
         new CityChoicePresenter(this);
         initView(view);

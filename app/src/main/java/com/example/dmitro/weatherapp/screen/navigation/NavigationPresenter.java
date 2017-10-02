@@ -5,11 +5,7 @@ import android.os.Bundle;
 import com.example.dmitro.weatherapp.data.model.social.UserFacebook;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
 import com.google.gson.Gson;
-
-import org.json.JSONObject;
 
 /**
  * Created by dmitro on 29.09.17.

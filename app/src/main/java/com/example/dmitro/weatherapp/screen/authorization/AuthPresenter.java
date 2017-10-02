@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.WeatherApp;
-import com.example.dmitro.weatherapp.data.model.weather.Weather;
 import com.example.dmitro.weatherapp.screen.authorization.AuthContract.Presenter;
 import com.facebook.AccessToken;
 

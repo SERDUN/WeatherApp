@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.WeatherApp;
-import com.example.dmitro.weatherapp.data.model.weather.current.WeatherResponse;
 import com.example.dmitro.weatherapp.data.repository.WeatherRepositoryManager;
 import com.example.dmitro.weatherapp.utils.Injection;
 import com.facebook.share.ShareApi;

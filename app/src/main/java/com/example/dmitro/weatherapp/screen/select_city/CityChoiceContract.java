@@ -11,16 +11,16 @@ import com.example.dmitro.weatherapp.screen.BaseView;
 public class CityChoiceContract {
     public interface View extends BaseView<Presenter> {
 
-        public void showNewPlaces(Places places);
+         void showNewPlaces(Places places);
 
-        public void showWeatherSelectedCity(double lat, double lng);
+         void showWeatherSelectedCity(double lat, double lng);
 
     }
 
     public interface Presenter extends BasePresenter {
 
-        public void getPlacesByWord(String place);
+         void getPlacesByWord(String place);
 
-        public void getDetailsPlace(String placeId);
+         void getDetailsPlace(String placeId);
     }
 }
