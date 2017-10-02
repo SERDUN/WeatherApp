@@ -5,5 +5,6 @@ package com.example.dmitro.weatherapp.screen;
  */
 
 public interface BaseView<T> {
+
     public void setPresenter(T t);
 }

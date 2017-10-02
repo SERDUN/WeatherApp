@@ -6,53 +6,80 @@
     android:layout_height="match_parent"
     android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
-    android:layout_margin="10dp"
-    android:orientation="vertical"
-    tools:context=".screen.select_city.CityChoiceActivity">
-
-
-    <EditText
-        android:id="@+id/places_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/empty_text"
-        android:inputType="textPersonName"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:orientation="horizontal">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.dmitro.weatherapp.screen.RecyclerViewEmptySupport
-            android:id="@+id/places_rv"
+        <ImageView
+            android:id="@+id/backg_weather_details_activity_iv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etPlaces"
-            app:layout_constraintVertical_bias="0.0" />
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/background" />
 
-        <TextView
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:id="@+id/empty_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/empty_text"
-            android:visibility="gone" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/weather_details_tb"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_toolbar"
+                android:background="#1738288e">
+
+                <ImageButton
+                    android:id="@+id/back_city_choice_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="#00000000"
+                    android:paddingLeft="@dimen/middle_padding"
+                    app:srcCompat="@drawable/ic_keyboard_backspace_black_24dp" />
+
+                <EditText
+                    android:id="@+id/places_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/middle_padding"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:hint="@string/empty_input_place_text"
+                    android:inputType="textPersonName"
+                    android:visibility="visible"
+                  >
+                    <requestFocus/>
+                </EditText>
 
 
+            </LinearLayout>
+
+
+            <com.example.dmitro.weatherapp.screen.RecyclerViewEmptySupport
+                android:id="@+id/places_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:background="#4ba4a3a3"
+                android:textColor="@color/colorTitle"
+
+                android:layout_marginTop="@dimen/double_big_padding"
+                android:textSize="@dimen/middle_font"
+                android:id="@+id/empty_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/big_padding"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:text="@string/empty_text"
+                android:visibility="gone" />
+
+
+        </LinearLayout>
     </FrameLayout>
 
 

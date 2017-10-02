@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Weather implements Serializable {
+public class Weather  implements Serializable {
 
     @SerializedName("id")
     @Expose

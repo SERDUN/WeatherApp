@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/weather_details_tb"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_toolbar"
+    android:layout_marginBottom="@dimen/middle_padding"
+    android:background="#1338288e"
+    android:minHeight="?attr/actionBarSize"
+    android:orientation="horizontal"
+    android:theme="?attr/actionBarTheme">
+
+    <ImageButton
+        android:layout_weight="1"
+        android:id="@+id/back_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#00000000"
+        android:paddingLeft="@dimen/middle_padding"
+        app:srcCompat="@drawable/ic_keyboard_backspace_black_24dp" />
+
+
+    <TextView
+        android:layout_weight="20"
+        android:id="@+id/toolbar_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingRight="@dimen/middle_padding"
+        android:text="test"
+        android:textColor="@color/colorTitle"
+        android:textSize="@dimen/middle_font" />
+
+    <ImageButton
+        android:paddingRight="@dimen/middle_padding"
+        android:layout_weight="1"
+        android:id="@+id/location_button"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#00000000"
+        android:paddingLeft="@dimen/middle_padding"
+        app:srcCompat="@drawable/ic_location_on_black_24dp" />
+
+
+</LinearLayout>
