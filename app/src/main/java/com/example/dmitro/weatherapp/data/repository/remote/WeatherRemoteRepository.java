@@ -2,6 +2,7 @@ package com.example.dmitro.weatherapp.data.repository.remote;
 
 import com.example.dmitro.weatherapp.data.model.geo.placeDetails.PlaceDetails;
 import com.example.dmitro.weatherapp.data.model.geo.places.Places;
+import com.example.dmitro.weatherapp.data.model.social.UserFacebook;
 import com.example.dmitro.weatherapp.data.model.weather.current.WeatherResponse;
 import com.example.dmitro.weatherapp.data.model.weather.many_day.ResponseManyDayWeather;
 import com.example.dmitro.weatherapp.data.repository.WeatherDataSource;
@@ -103,5 +104,11 @@ public class WeatherRemoteRepository implements WeatherDataSource {
                 complete.call();
             }
         });
+    }
+
+    @Deprecated
+    @Override
+    public void cacheUserData(UserFacebook userFacebook) {
+
     }
 }

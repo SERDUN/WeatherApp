@@ -2,6 +2,7 @@ package com.example.dmitro.weatherapp.data.repository;
 
 import com.example.dmitro.weatherapp.data.model.geo.placeDetails.PlaceDetails;
 import com.example.dmitro.weatherapp.data.model.geo.places.Places;
+import com.example.dmitro.weatherapp.data.model.social.UserFacebook;
 import com.example.dmitro.weatherapp.data.model.weather.current.WeatherResponse;
 import com.example.dmitro.weatherapp.data.model.weather.many_day.ResponseManyDayWeather;
 import com.example.dmitro.weatherapp.data.repository.local.WeatherLocalRepository;
@@ -74,5 +75,10 @@ public class WeatherRepositoryManager implements WeatherDataSource {
     public void getPlaceId(String placeId, Action1<PlaceDetails> success, Action1<Throwable> failure, Action0 complete) {
         weatherRemoteRepository.getPlaceId(placeId, success, failure, complete);
 
+    }
+
+    @Override
+    public void cacheUserData(UserFacebook userFacebook) {
+        weatherLocalRepository.cacheUserData(userFacebook);
     }
 }

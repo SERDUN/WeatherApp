@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
@@ -6,8 +7,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.dmitro.weatherapp"
-        minSdkVersion 19
-        targetSdkVersion 19
+        minSdkVersion 21
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -28,8 +29,18 @@ android {
 }
 
 repositories {
-    // You can also use jcenter if you prefer
     mavenCentral()
+    maven { url "https://jitpack.io" }
+
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.code.findbugs:jsr305:3.0.1'
+    }
+}
+realm {
+    syncEnabled = true;
 }
 
 dependencies {
@@ -40,7 +51,7 @@ dependencies {
     compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.9.0'
 
 
-
+    compile 'com.github.dmytrodanylyk:android-morphing-button:98a4986e56' // commit hash
     compile 'com.google.android.gms:play-services-maps:11.0.4'
     compile 'com.google.android.gms:play-services-places:11.0.4'
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'

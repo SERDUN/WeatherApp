@@ -18,7 +18,6 @@ public class AuthContract {
     }
 
     interface Presenter {
-        public void saveFacebookToken(String accessToken);
 
         public void trySignIn();
 

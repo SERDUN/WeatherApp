@@ -1,27 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="1"
     android:gravity="center"
-    android:layout_margin="@dimen/middle_padding"
-    >
+    android:orientation="vertical"
+    android:weightSum="1">
 
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:enabled="false" />
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button_fb"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/middle_padding"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:enabled="false" />
+
+
+        <com.dd.morphingbutton.MorphingButton
+            android:id="@+id/sign_in_facebook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/com_facebook_blue"
+            android:text="@string/log_in_width_facebook" />
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_weight="0.18" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_red_dark"
+        android:scaleType="centerCrop"
+        android:visibility="invisible" />
+</FrameLayout>

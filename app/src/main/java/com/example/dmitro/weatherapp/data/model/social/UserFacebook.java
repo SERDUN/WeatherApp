@@ -4,7 +4,9 @@ package com.example.dmitro.weatherapp.data.model.social;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UserFacebook {
+import io.realm.RealmObject;
+
+public class UserFacebook extends RealmObject {
 
     @SerializedName("id")
     @Expose

@@ -36,6 +36,7 @@
     <string name="sign_out">Sign out</string>
     <string name="weather">Show Weather</string>
     <string name="shared_weather">Shared Weather</string>
+    <string name="log_in_width_facebook">Log in width Facebook</string>
 
     <string-array name="social">
         <item>Facebook</item>

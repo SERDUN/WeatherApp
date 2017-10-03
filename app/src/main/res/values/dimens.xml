@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="middle_padding">20dp</dimen>
+    <dimen name="small_padding">10dp</dimen>
     <dimen name="big_padding">30dp</dimen>
     <dimen name="double_big_padding">60dp</dimen>
     <dimen name="height_toolbar">56dp</dimen>
@@ -15,5 +16,8 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="navdrawer_profile_image_size">40dp</dimen>
+
 
 </resources>
