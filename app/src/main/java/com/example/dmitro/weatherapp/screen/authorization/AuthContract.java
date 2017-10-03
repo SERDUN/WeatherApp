@@ -18,6 +18,7 @@ public class AuthContract {
     }
 
     interface Presenter {
+        public void saveTokenForGoogle(String token);
 
         public void trySignIn();
 

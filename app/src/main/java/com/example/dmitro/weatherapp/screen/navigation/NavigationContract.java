@@ -1,6 +1,6 @@
 package com.example.dmitro.weatherapp.screen.navigation;
 
-import com.example.dmitro.weatherapp.data.model.social.UserFacebook;
+import com.example.dmitro.weatherapp.data.model.social.User;
 import com.example.dmitro.weatherapp.screen.BaseView;
 
 /**
@@ -14,7 +14,7 @@ public class NavigationContract {
 
         void showContent(boolean show);
 
-        void showUserInformation(UserFacebook userFacebook);
+        void showUserInformation(User user);
 
 
         void showFailure();

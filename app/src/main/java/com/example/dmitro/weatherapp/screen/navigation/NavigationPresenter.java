@@ -1,11 +1,7 @@
 package com.example.dmitro.weatherapp.screen.navigation;
 
-import android.os.Bundle;
-
-import com.example.dmitro.weatherapp.data.model.social.UserFacebook;
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.google.gson.Gson;
+import com.example.dmitro.weatherapp.data.repository.WeatherRepositoryManager;
+import com.example.dmitro.weatherapp.utils.Injection;
 
 /**
  * Created by dmitro on 29.09.17.
@@ -13,6 +9,7 @@ import com.google.gson.Gson;
 
 public class NavigationPresenter implements NavigationContract.Presenter {
     public NavigationContract.View view;
+    WeatherRepositoryManager weatherRepositoryManager = Injection.provideManager();
 
     public NavigationPresenter(NavigationContract.View view) {
         this.view = view;
@@ -27,12 +24,18 @@ public class NavigationPresenter implements NavigationContract.Presenter {
 
     @Override
     public void getCurrentUser() {
-        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), (object, response) -> {
-            view.showUserInformation(new Gson().fromJson(response.getRawResponse(),UserFacebook.class));
+        weatherRepositoryManager.getCurrentUser(s -> {
+            view.showUserInformation(s);
+        }, f -> {
+
+        }, () -> {
         });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "name,link,picture.type(large),email");
-        request.setParameters(parameters);
-        request.executeAsync();
+//        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), (object, response) -> {
+//            view.showUserInformation(new Gson().fromJson(response.getRawResponse(), UserFacebook.class));
+//        });
+//        Bundle parameters = new Bundle();
+//        parameters.putString("fields", "name,link,picture.type(large),email,id");
+//        request.setParameters(parameters);
+//        request.executeAsync();
     }
 }

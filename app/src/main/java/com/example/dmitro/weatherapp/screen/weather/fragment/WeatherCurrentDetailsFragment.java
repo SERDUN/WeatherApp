@@ -13,8 +13,8 @@ import android.widget.TextView;
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.WeatherApp;
 import com.example.dmitro.weatherapp.data.model.weather.current.WeatherResponse;
-import com.example.dmitro.weatherapp.service.weather_service.weather_loader.base.Response;
-import com.example.dmitro.weatherapp.service.weather_service.weather_loader.realization_loader.CurrentWeatherLoader;
+import com.example.dmitro.weatherapp.data.loader.base.Response;
+import com.example.dmitro.weatherapp.data.loader.CurrentWeatherLoader;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;

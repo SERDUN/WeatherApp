@@ -1,15 +1,26 @@
 package com.example.dmitro.weatherapp.data.repository.remote;
 
+import android.os.Bundle;
+
 import com.example.dmitro.weatherapp.data.model.geo.placeDetails.PlaceDetails;
 import com.example.dmitro.weatherapp.data.model.geo.places.Places;
-import com.example.dmitro.weatherapp.data.model.social.UserFacebook;
+import com.example.dmitro.weatherapp.data.model.social.User;
 import com.example.dmitro.weatherapp.data.model.weather.current.WeatherResponse;
 import com.example.dmitro.weatherapp.data.model.weather.many_day.ResponseManyDayWeather;
+import com.example.dmitro.weatherapp.data.repository.SocialDataSources;
 import com.example.dmitro.weatherapp.data.repository.WeatherDataSource;
 import com.example.dmitro.weatherapp.service.geo_service.GeoFactory;
 import com.example.dmitro.weatherapp.service.weather_service.weather_service.WeatherFactory;
 import com.example.dmitro.weatherapp.utils.callback.Action0;
 import com.example.dmitro.weatherapp.utils.callback.Action1;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,7 +30,7 @@ import retrofit2.Response;
  * Created by dmitro on 25.09.17.
  */
 
-public class WeatherRemoteRepository implements WeatherDataSource {
+public class RemoteRepository implements WeatherDataSource, SocialDataSources {
     @Override
     public WeatherResponse getCacheWeather() {
         return null;
@@ -108,7 +119,33 @@ public class WeatherRemoteRepository implements WeatherDataSource {
 
     @Deprecated
     @Override
-    public void cacheUserData(UserFacebook userFacebook) {
+    public void cacheUserData(User userFacebook) {
 
+    }
+
+    @Override
+    public void getCurrentUser(Action1<User> success, Action1<Throwable> failure, Action0 complete) {
+
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), (object, response) -> {
+            if (object != null) {
+                User user=new User();
+                try {
+                    user.setName(response.getJSONObject().getString("name"));
+                    user.setEmail(response.getJSONObject().getString("email"));
+                    user.setImageUrl(((JSONObject) ((JSONObject) response.getJSONObject().get("picture")).get("data")).getString("url"));
+                success.call(user);
+                complete.call();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                failure.call(new Throwable("Not valid access token"));
+                complete.call();
+            }
+        });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "name,link,picture.type(large),email,id");
+        request.setParameters(parameters);
+        request.executeAsync();
     }
 }

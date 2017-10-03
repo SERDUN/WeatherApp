@@ -1,4 +1,4 @@
-package com.example.dmitro.weatherapp.service.weather_service.weather_loader.base;
+package com.example.dmitro.weatherapp.data.loader.base;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;

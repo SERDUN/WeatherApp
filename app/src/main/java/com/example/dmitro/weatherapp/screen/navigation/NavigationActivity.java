@@ -1,6 +1,7 @@
 package com.example.dmitro.weatherapp.screen.navigation;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -16,7 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dmitro.weatherapp.R;
-import com.example.dmitro.weatherapp.data.model.social.UserFacebook;
+import com.example.dmitro.weatherapp.WeatherApp;
+import com.example.dmitro.weatherapp.data.model.social.User;
 import com.example.dmitro.weatherapp.screen.authorization.AuthActivity;
 import com.example.dmitro.weatherapp.screen.weather.WeatherDetailsFragment;
 import com.example.dmitro.weatherapp.service.social_service.FacebookApi;
@@ -60,8 +62,6 @@ public class NavigationActivity extends AppCompatActivity
         presenter.getCurrentUser();
 
 
-
-
     }
 
 
@@ -74,9 +74,17 @@ public class NavigationActivity extends AppCompatActivity
 
     @OnClick(R.id.nav_footer_sign_out)
     public void sigOut() {
-        LoginManager.getInstance().logOut();
-        startActivity(new Intent(this, AuthActivity.class));
-        finish();
+        if (getSharedPreferences("token",MODE_PRIVATE).getString(WeatherApp.getInstance().getString(R.string.google_token), "").isEmpty()) {
+            LoginManager.getInstance().logOut();
+            startActivity(new Intent(this, AuthActivity.class));
+            finish();
+        } else {
+            SharedPreferences.Editor editor =getSharedPreferences("token",MODE_PRIVATE).edit();
+            editor.putString(WeatherApp.getInstance().getString(R.string.google_token), "").apply();
+            startActivity(new Intent(this, AuthActivity.class));
+            finish();
+        }
+
     }
 
 
@@ -95,7 +103,6 @@ public class NavigationActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.navigation, menu);
         return true;
     }
-
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -143,11 +150,11 @@ public class NavigationActivity extends AppCompatActivity
     }
 
     @Override
-    public void showUserInformation(UserFacebook userFacebook) {
+    public void showUserInformation(User userFacebook) {
         fullNameTextView.setText(userFacebook.getName());
         emailTextView.setText(userFacebook.getEmail());
         Picasso.with(getApplicationContext())
-                .load(userFacebook.getPicture().getData().getUrl()).transform(new PicassoCirleTransformation())
+                .load(userFacebook.getImageUrl()).transform(new PicassoCirleTransformation())
                 .into(userImageView);
     }
 

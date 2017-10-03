@@ -37,6 +37,8 @@
     <string name="weather">Show Weather</string>
     <string name="shared_weather">Shared Weather</string>
     <string name="log_in_width_facebook">Log in width Facebook</string>
+    <string name="google_token">google_token</string>
+    <string name="log_in_width_google">Log in width Google</string>
 
     <string-array name="social">
         <item>Facebook</item>
