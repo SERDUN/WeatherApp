@@ -25,6 +25,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.vansuita.gaussianblur.GaussianBlur;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,7 +94,10 @@ public class WeatherDetailsFragment extends Fragment implements WeatherDetailsCo
         new WeatherDetailsPresenter(this);
         init();
         initToolbar();
-        applyBlur();
+//        applyBlur();
+
+        GaussianBlur.with(getContext()).put(R.mipmap.background, backgroundWeather);
+
 
         if (savedInstanceState == null) {
             presenter.getCurrentWeather();

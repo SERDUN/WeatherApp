@@ -2,30 +2,30 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
     android:weightSum="1">
 
     <LinearLayout
+        android:id="@+id/containerLL"
         android:layout_width="match_parent"
-
         android:layout_height="match_parent"
         android:layout_margin="@dimen/middle_padding"
-        android:gravity="center"
+        android:gravity="bottom|center"
         android:orientation="vertical">
 
 
         <com.dd.morphingbutton.MorphingButton
-            android:paddingLeft="@dimen/small_padding"
+            android:padding="@dimen/middle_padding"
+            android:layout_margin="@dimen/middle_padding"
             android:id="@+id/sign_in_google"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/middle_padding"
             android:text="@string/log_in_width_google" />
 
 
         <com.dd.morphingbutton.MorphingButton
-            android:paddingLeft="@dimen/small_padding"
+            android:padding="@dimen/middle_padding"
+            android:layout_margin="@dimen/middle_padding"
             android:id="@+id/sign_in_facebook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
