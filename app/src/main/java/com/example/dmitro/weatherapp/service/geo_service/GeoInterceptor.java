@@ -23,7 +23,7 @@ public class GeoInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        HttpUrl url = request.url().newBuilder().addQueryParameter("key",  WeatherApp.getInstance().getApplicationContext().getString(R.string.GOOGLE_MAP_KEY))
+        HttpUrl url = request.url().newBuilder().addQueryParameter("key",  WeatherApp.getInstance().getApplicationContext().getString(R.string.google_map_key))
                 .addQueryParameter("format", "json").build();
         request = request.newBuilder().url(url).build();
         Log.d("test_iterapt", "intercept: "+request.url());

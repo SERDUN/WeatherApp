@@ -21,6 +21,7 @@
 
 
     <TextView
+
         android:layout_weight="20"
         android:id="@+id/toolbar_title"
         android:layout_width="match_parent"
@@ -29,7 +30,7 @@
         android:gravity="center"
         android:paddingRight="@dimen/middle_padding"
         android:text="test"
-        android:textColor="@color/colorTitle"
+        android:textColor="@color/icons"
         android:textSize="@dimen/middle_font" />
 
     <ImageButton

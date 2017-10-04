@@ -123,18 +123,23 @@ public class RemoteRepository implements WeatherDataSource, SocialDataSources {
 
     }
 
+    @Deprecated
     @Override
-    public void getCurrentUser(Action1<User> success, Action1<Throwable> failure, Action0 complete) {
+    public void getLocalUser(Action1<User> success, Action1<Throwable> failure, Action0 complete) {
 
+    }
+
+    @Override
+    public void getRemoteUser(Action1<User> success, Action1<Throwable> failure, Action0 complete) {
         GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), (object, response) -> {
             if (object != null) {
-                User user=new User();
+                User user = new User();
                 try {
                     user.setName(response.getJSONObject().getString("name"));
                     user.setEmail(response.getJSONObject().getString("email"));
                     user.setImageUrl(((JSONObject) ((JSONObject) response.getJSONObject().get("picture")).get("data")).getString("url"));
-                success.call(user);
-                complete.call();
+                    success.call(user);
+                    complete.call();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

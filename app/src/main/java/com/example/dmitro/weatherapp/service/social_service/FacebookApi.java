@@ -70,7 +70,7 @@ public class FacebookApi {
 
     public static void shareWeather() {
         WeatherRepositoryManager serviceManager = Injection.provideManager();
-        String url = WeatherApp.getInstance().getBaseContext().getString(R.string.ICON_WEATHER_URL) + serviceManager.getCacheWeather().getWeather().get(0).getIcon() + POSTFIX_BY_ICON_URL;
+        String url = WeatherApp.getInstance().getBaseContext().getString(R.string.icon_weather_url) + serviceManager.getCacheWeather().getWeather().get(0).getIcon() + POSTFIX_BY_ICON_URL;
         String caption = TEMPERATURE + serviceManager.getCacheWeather().getMain().getTemp() +"  "+LOCATION + serviceManager.getCacheWeather().getName();
         sharePhoto(caption, url);
     }

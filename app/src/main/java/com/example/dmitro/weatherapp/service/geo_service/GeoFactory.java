@@ -32,7 +32,7 @@ public class GeoFactory {
 
     private static Retrofit getRetrofitBuilder() {
         return new Retrofit.Builder().client(getOkHttpClient())
-                .baseUrl(WeatherApp.getInstance().getApplicationContext().getString(R.string.BASE_GEO_URL))
+                .baseUrl(WeatherApp.getInstance().getApplicationContext().getString(R.string.base_geo_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

@@ -10,6 +10,7 @@ import com.example.dmitro.weatherapp.utils.callback.Action1;
 
 public interface SocialDataSources {
     public void cacheUserData(User userFacebook);
-    public void getCurrentUser(Action1<User> success, Action1<Throwable> failure, Action0 complete);
+    public void getLocalUser(Action1<User> success, Action1<Throwable> failure, Action0 complete);
+    public void getRemoteUser(Action1<User> success, Action1<Throwable> failure, Action0 complete);
 
 }

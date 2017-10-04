@@ -5,7 +5,8 @@
 android:layout_marginBottom="@dimen/middle_padding"    android:layout_height="wrap_content">
 
 
-    <TextView
+    <TextView                android:textColor="@color/icons"
+
         android:id="@+id/time_tv"
         android:layout_margin="@dimen/middle_padding"
         android:gravity="right"

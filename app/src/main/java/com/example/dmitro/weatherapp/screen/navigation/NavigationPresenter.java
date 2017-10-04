@@ -1,5 +1,9 @@
 package com.example.dmitro.weatherapp.screen.navigation;
 
+import android.content.SharedPreferences;
+
+import com.example.dmitro.weatherapp.R;
+import com.example.dmitro.weatherapp.WeatherApp;
 import com.example.dmitro.weatherapp.data.repository.WeatherRepositoryManager;
 import com.example.dmitro.weatherapp.utils.Injection;
 
@@ -8,12 +12,15 @@ import com.example.dmitro.weatherapp.utils.Injection;
  */
 
 public class NavigationPresenter implements NavigationContract.Presenter {
-    public NavigationContract.View view;
-    WeatherRepositoryManager weatherRepositoryManager = Injection.provideManager();
+    private NavigationContract.View view;
+    private WeatherRepositoryManager weatherRepositoryManager = Injection.provideManager();
+    private SharedPreferences sharedPreferences;
 
-    public NavigationPresenter(NavigationContract.View view) {
+
+    public NavigationPresenter(NavigationContract.View view, SharedPreferences sharedPreferences) {
         this.view = view;
         view.setPresenter(this);
+        this.sharedPreferences = sharedPreferences;
     }
 
     @Override
@@ -24,18 +31,26 @@ public class NavigationPresenter implements NavigationContract.Presenter {
 
     @Override
     public void getCurrentUser() {
-        weatherRepositoryManager.getCurrentUser(s -> {
-            view.showUserInformation(s);
-        }, f -> {
+        if (!sharedPreferences.getString(WeatherApp.getInstance().getString(R.string.google_auth_token), "").isEmpty()) {
+            weatherRepositoryManager.getLocalUser(sRemote -> {
+                view.showUserInformation(sRemote);
+            }, f -> {
+            }, () -> {
+            });
+        } else {
+            weatherRepositoryManager.getRemoteUser(s -> {
+                view.showUserInformation(s);
+                weatherRepositoryManager.cacheUserData(s);
+            }, f -> {
+                weatherRepositoryManager.getLocalUser(sLocacl -> {
+                    view.showUserInformation(sLocacl);
+                }, fLocal -> {
+                }, () -> {
+                });
 
-        }, () -> {
-        });
-//        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), (object, response) -> {
-//            view.showUserInformation(new Gson().fromJson(response.getRawResponse(), UserFacebook.class));
-//        });
-//        Bundle parameters = new Bundle();
-//        parameters.putString("fields", "name,link,picture.type(large),email,id");
-//        request.setParameters(parameters);
-//        request.executeAsync();
+            }, () -> {
+            });
+        }
+
     }
 }

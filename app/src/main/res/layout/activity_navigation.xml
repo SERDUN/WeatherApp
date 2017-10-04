@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/colorPrimary"
     tools:openDrawer="start">
 
 
@@ -23,7 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#965c5e60"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_navigation"
         app:itemTextColor="@color/colorTitle"

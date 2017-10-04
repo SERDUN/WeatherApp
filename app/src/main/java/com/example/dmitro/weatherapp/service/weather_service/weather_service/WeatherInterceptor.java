@@ -21,7 +21,7 @@ public class WeatherInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        HttpUrl url = request.url().newBuilder().addQueryParameter("APPID", WeatherApp.getInstance().getApplicationContext().getString(R.string.WEATHER_API_KEY)).build();
+        HttpUrl url = request.url().newBuilder().addQueryParameter("APPID", WeatherApp.getInstance().getApplicationContext().getString(R.string.weather_api_key)).build();
         Log.d(LOG_WEATHER_INTERCEPTOR, "intercept: " + url.toString());
         request = request.newBuilder().url(url).build();
         return chain.proceed(request);

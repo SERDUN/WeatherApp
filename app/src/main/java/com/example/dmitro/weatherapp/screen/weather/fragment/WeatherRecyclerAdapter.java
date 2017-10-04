@@ -86,7 +86,7 @@ public class WeatherRecyclerAdapter extends RecyclerViewEmptySupport.Adapter<Wea
             while (it.hasNext()) {
                 Map.Entry pair = (Map.Entry) it.next();
                 dayTextView.setText(pair.getKey().toString());
-                String url = WeatherApp.getInstance().getBaseContext().getString(R.string.ICON_WEATHER_URL) + weatherResponse.get(pair.getKey().toString()).get(0).getWeather().get(0).getIcon() + POSTFIX_BY_ICON_URL;
+                String url = WeatherApp.getInstance().getBaseContext().getString(R.string.icon_weather_url) + weatherResponse.get(pair.getKey().toString()).get(0).getWeather().get(0).getIcon() + POSTFIX_BY_ICON_URL;
                 Picasso.with(context).load(url).into(iconImageView);
                 String diapason = getMinAndMaxTemp(weatherResponse.get(pair.getKey().toString()));
                 tempTextView.setText(diapason);

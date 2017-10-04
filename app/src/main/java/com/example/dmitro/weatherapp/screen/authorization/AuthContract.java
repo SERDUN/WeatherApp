@@ -8,24 +8,18 @@ import com.example.dmitro.weatherapp.screen.BaseView;
 
 public class AuthContract {
     interface View extends BaseView<AuthContract.Presenter> {
-        public void showProgressBar(boolean show);
+        void showProgressBar(boolean show);
 
-
-        public void signInGoogle();
-
-        public void openBaseScreen();
+        void openBaseScreen();
 
     }
 
     interface Presenter {
-        public void saveTokenForGoogle(String token);
+        void saveTokenForGoogle(String token);
+
+        void saveTokenForFacebook(String token);
 
         public void trySignIn();
-
-        public void signInFacebook();
-
-        public void signInGoogle();
-
 
     }
 }

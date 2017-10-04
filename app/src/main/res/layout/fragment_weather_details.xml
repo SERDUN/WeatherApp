@@ -21,6 +21,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:textColor="@color/icons"
                 android:id="@+id/temperature_tv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -62,6 +63,7 @@
                     app:srcCompat="@drawable/drop_icon" />
 
                 <TextView
+                    android:textColor="@color/icons"
                     android:id="@+id/humidity_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -81,12 +83,15 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:textColor="@color/icons"
+
                     android:layout_width="@dimen/width_icon"
                     android:layout_height="@dimen/height_icon"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/temp_icon" />
 
                 <TextView
+                    android:textColor="@color/icons"
                     android:id="@+id/diapason_temp_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -113,6 +118,7 @@
                     app:srcCompat="@drawable/wind_icon" />
 
                 <TextView
+                    android:textColor="@color/icons"
                     android:id="@+id/wind_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

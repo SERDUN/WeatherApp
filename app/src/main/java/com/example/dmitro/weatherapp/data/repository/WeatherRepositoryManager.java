@@ -16,14 +16,14 @@ import com.example.dmitro.weatherapp.utils.callback.Action1;
 
 public class WeatherRepositoryManager implements WeatherDataSource, SocialDataSources {
     private static WeatherDataSource INSTANCE = null;
-    private final WeatherLocalRepository weatherLocalRepository;
+    private final WeatherLocalRepository localRepository;
     private final RemoteRepository remoteRepository;
 
     private WeatherResponse cacheWeather;
     private ResponseManyDayWeather cacheManyDayWeather;
 
-    private WeatherRepositoryManager(WeatherLocalRepository weatherLocalRepository, RemoteRepository remoteRepository) {
-        this.weatherLocalRepository = weatherLocalRepository;
+    private WeatherRepositoryManager(WeatherLocalRepository localRepository, RemoteRepository remoteRepository) {
+        this.localRepository = localRepository;
         this.remoteRepository = remoteRepository;
     }
 
@@ -79,19 +79,16 @@ public class WeatherRepositoryManager implements WeatherDataSource, SocialDataSo
 
     @Override
     public void cacheUserData(User user) {
-        weatherLocalRepository.cacheUserData(user);
+        localRepository.cacheUserData(user);
     }
 
     @Override
-    public void getCurrentUser(Action1<User> success, Action1<Throwable> failure, Action0 complete) {
-        remoteRepository.getCurrentUser(s -> {//user request
-            success.call(s);//if success moves further
-            weatherLocalRepository.cacheUserData(s);//if a successful result is cached by it
-        }, f -> {
-            weatherLocalRepository.getCurrentUser(localSuccess -> {//if the network problem
-                success.call(localSuccess);//is returned to the cached user
-            }, failure, complete);
-        }, complete);
+    public void getLocalUser(Action1<User> success, Action1<Throwable> failure, Action0 complete) {
+        localRepository.getLocalUser(success, failure, complete);
+    }
 
+    @Override
+    public void getRemoteUser(Action1<User> success, Action1<Throwable> failure, Action0 complete) {
+        remoteRepository.getRemoteUser(success, failure, complete);
     }
 }

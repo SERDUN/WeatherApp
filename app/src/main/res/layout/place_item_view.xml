@@ -24,16 +24,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:textColor="@color/icons"
                 android:text="TextView"
                 android:textSize="20dp" />
 
             <TextView
+
                 android:id="@+id/tvCountry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="TextView"
-                android:textColor="#5b9476" />
+                android:textColor="@color/icons"
+                />
 
 
         </LinearLayout>

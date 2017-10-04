@@ -106,7 +106,7 @@ public class WeatherForecastRecyclerAdapter extends RecyclerViewEmptySupport.Ada
                 humidityTextView.setText(wr.getMain().getHumidity().toString() + POSTFIX_BY_TEMP_PERCENT);
                 windTextView.setText(wr.getWind().getSpeed().toString() + POSTFIX_BY_TEMP_MS);
                 diapasonTempTextView.setText(wr.getMain().getTempMax() + POSTFIX_BY_TEMP_CELSIUS + " - " + wr.getMain().getTempMin() + POSTFIX_BY_TEMP_CELSIUS);
-                String url = WeatherApp.getInstance().getBaseContext().getString(R.string.ICON_WEATHER_URL) + wr.getWeather().get(0).getIcon() + POSTFIX_BY_ICON_URL;
+                String url = WeatherApp.getInstance().getBaseContext().getString(R.string.icon_weather_url) + wr.getWeather().get(0).getIcon() + POSTFIX_BY_ICON_URL;
                 Picasso.with(context).load(url).into(weatherIconImageView);
 
             }

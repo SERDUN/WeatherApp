@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">WeatherApp</string>
     <string name="show_current_weather">Show current weather</string>
     <string name="search_place">Search Place</string>
@@ -10,10 +11,18 @@
     <string name="empty_text">list is empty, enter a place nam</string>
     <string name="empty_input_place_text">Place</string>
     <string name="enter_place">list is empty, enter a place name</string>
+    <string name="authorization_error">Authorization error</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="yes">Ok</string>
     <string name="message_text">Failure, repeat ?</string>
+
+    <string-array name="my_facebook_permission">
+        <item>public_profile</item>
+        <item>email</item>
+        <item>user_birthday</item>
+        <item>user_friends</item>
+    </string-array>
 
     <string name="lat">lat</string>
     <string name="lon">lon</string>
@@ -37,13 +46,11 @@
     <string name="weather">Show Weather</string>
     <string name="shared_weather">Shared Weather</string>
     <string name="log_in_width_facebook">Log in width Facebook</string>
-    <string name="google_token">google_token</string>
     <string name="log_in_width_google">Log in width Google</string>
 
-    <string-array name="social">
-        <item>Facebook</item>
-        <item>Google</item>
-    </string-array>
+    <string name="google_auth_token">google_auth_token</string>
+    <string name="facebook_auth_token">facebook_auth_token</string>
+
 
 
 </resources>

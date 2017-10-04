@@ -30,7 +30,7 @@ public class WeatherFactory {
 
 
     private static Retrofit getRetrofitBuilder() {
-        String url= WeatherApp.getInstance().getApplicationContext().getString(R.string.BASE_WEATHER_URL);
+        String url= WeatherApp.getInstance().getApplicationContext().getString(R.string.base_weather_url);
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(url).addConverterFactory(GsonConverterFactory.create())
                 .client(getOkHttpClient());

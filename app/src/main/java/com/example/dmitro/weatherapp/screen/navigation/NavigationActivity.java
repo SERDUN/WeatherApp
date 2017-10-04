@@ -2,6 +2,7 @@ package com.example.dmitro.weatherapp.screen.navigation;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -22,9 +23,12 @@ import com.example.dmitro.weatherapp.data.model.social.User;
 import com.example.dmitro.weatherapp.screen.authorization.AuthActivity;
 import com.example.dmitro.weatherapp.screen.weather.WeatherDetailsFragment;
 import com.example.dmitro.weatherapp.service.social_service.FacebookApi;
+import com.example.dmitro.weatherapp.service.social_service.GoogleApi;
 import com.example.dmitro.weatherapp.utils.PicassoCirleTransformation;
+import com.example.dmitro.weatherapp.utils.SocialProfileUtils;
 import com.example.dmitro.weatherapp.utils.callback.Action0;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.plus.PlusShare;
 import com.squareup.picasso.Picasso;
 
 import butterknife.ButterKnife;
@@ -58,10 +62,8 @@ public class NavigationActivity extends AppCompatActivity
         initHeader(header);
 
         addFragment(WeatherDetailsFragment.newInstance(), WeatherDetailsFragment.WEATHER_DETAILS_FRAGMENT_KEY);
-        new NavigationPresenter(this);
+        new NavigationPresenter(this, getSharedPreferences("token", MODE_PRIVATE));
         presenter.getCurrentUser();
-
-
     }
 
 
@@ -74,13 +76,14 @@ public class NavigationActivity extends AppCompatActivity
 
     @OnClick(R.id.nav_footer_sign_out)
     public void sigOut() {
-        if (getSharedPreferences("token",MODE_PRIVATE).getString(WeatherApp.getInstance().getString(R.string.google_token), "").isEmpty()) {
-            LoginManager.getInstance().logOut();
+        if (!getSharedPreferences("token", MODE_PRIVATE).getString(WeatherApp.getInstance().getString(R.string.google_auth_token), "").isEmpty()) {
+            SharedPreferences.Editor editor = getSharedPreferences("token", MODE_PRIVATE).edit();
+            editor.putString(WeatherApp.getInstance().getString(R.string.google_auth_token), "").apply();
             startActivity(new Intent(this, AuthActivity.class));
             finish();
-        } else {
-            SharedPreferences.Editor editor =getSharedPreferences("token",MODE_PRIVATE).edit();
-            editor.putString(WeatherApp.getInstance().getString(R.string.google_token), "").apply();
+        } else if (!getSharedPreferences("token", MODE_PRIVATE).getString(WeatherApp.getInstance().getString(R.string.facebook_auth_token), "").isEmpty()) {
+            SharedPreferences.Editor editor = getSharedPreferences("token", MODE_PRIVATE).edit();
+            editor.putString(WeatherApp.getInstance().getString(R.string.facebook_auth_token), "").apply();
             startActivity(new Intent(this, AuthActivity.class));
             finish();
         }
@@ -115,14 +118,27 @@ public class NavigationActivity extends AppCompatActivity
                 addFragment(WeatherDetailsFragment.newInstance(), WeatherDetailsFragment.WEATHER_DETAILS_FRAGMENT_KEY);
                 break;
             case R.id.nav_share_weather:
-                Toast.makeText(this, "Shared weather", Toast.LENGTH_SHORT).show();
-                FacebookApi.shareWeather();
+                shareInSocial();
                 break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void shareInSocial() {
+
+        switch (SocialProfileUtils.getCurrentSocialProfile(this)) {
+            case FACEBOOK:
+                FacebookApi.shareWeather();
+                break;
+            case GOOGLE:
+                startActivityForResult(GoogleApi.shareWeather(this), 0);
+                break;
+
+        }
+
     }
 
     private void addFragment(Fragment fragment, String fragmentKey) {

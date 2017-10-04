@@ -25,11 +25,17 @@ public class WeatherLocalRepository implements SocialDataSources {
     }
 
     @Override
-    public void getCurrentUser(Action1<User> success, Action1<Throwable> failure, Action0 complete) {
+    public void getLocalUser(Action1<User> success, Action1<Throwable> failure, Action0 complete) {
         realm=Realm.getDefaultInstance();
         realm.beginTransaction();
         success.call(realm.where(User.class).findFirst());
         realm.commitTransaction();
         realm.close();
+    }
+
+    @Deprecated
+    @Override
+    public void getRemoteUser(Action1<User> success, Action1<Throwable> failure, Action0 complete) {
+
     }
 }
