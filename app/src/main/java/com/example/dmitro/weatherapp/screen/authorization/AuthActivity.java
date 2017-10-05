@@ -1,13 +1,12 @@
 package com.example.dmitro.weatherapp.screen.authorization;
 
 
-import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dd.morphingbutton.MorphingButton;
@@ -15,6 +14,7 @@ import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.social.User;
 import com.example.dmitro.weatherapp.screen.navigation.NavigationActivity;
 import com.example.dmitro.weatherapp.utils.Injection;
+import com.example.dmitro.weatherapp.utils.animation.AnimationUtil;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -39,7 +39,7 @@ public class AuthActivity extends AppCompatActivity implements AuthContract.View
 
     private int BUTTON_WIDTH_HEIGHT_ANIMATION = BUTTON_WIDTH_AFTER_ANIMATION;
 
-    private int DURATION_ANIMATION = 500;
+    private int DURATION_ANIMATION = 1000;
 
     private int CORNER_RADIUS_ANIMATION = 500;
 
@@ -94,16 +94,14 @@ public class AuthActivity extends AppCompatActivity implements AuthContract.View
         signInFacebookButton.setIconLeft(R.drawable.ic_facebook_white_24dp);
         signInGoogleButton.setIconLeft(R.drawable.ic_google_plus_white_24dp);
 
-        signInFacebookButton.setOnClickListener(c ->
-                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(getResources().getStringArray(R.array.my_facebook_permission)))
-        );
+        signInFacebookButton.setOnClickListener(c -> {
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(getResources().getStringArray(R.array.my_facebook_permission)));
+
+
+        });
         signInGoogleButton.setOnClickListener(c -> {
             signInGoogle();
         });
-
-//        signInFacebookButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-
-
     }
 
 
@@ -113,18 +111,16 @@ public class AuthActivity extends AppCompatActivity implements AuthContract.View
                 .cornerRadius(CORNER_RADIUS_ANIMATION)
                 .width(BUTTON_WIDTH_AFTER_ANIMATION)
                 .height(BUTTON_WIDTH_HEIGHT_ANIMATION)
-                .color(R.color.com_facebook_button_background_color)
-                .colorPressed(R.color.com_facebook_button_login_silver_background_color_pressed)
-                .icon(R.drawable.ic_facebook_white_24dp);
+                .color(getResources().getColor(R.color.com_facebook_blue))
+                .colorPressed(getResources().getColor(R.color.facebookButton));
 
         morphingAnimationGoogle = MorphingButton.Params.create()
                 .duration(DURATION_ANIMATION)
                 .cornerRadius(CORNER_RADIUS_ANIMATION)
                 .width(BUTTON_WIDTH_AFTER_ANIMATION)
                 .height(BUTTON_WIDTH_HEIGHT_ANIMATION)
-                .color(R.color.com_facebook_button_background_color)
-                .colorPressed(R.color.com_facebook_button_login_silver_background_color_pressed)
-                .icon(R.drawable.ic_google_plus_white_24dp);
+                .color(getResources().getColor(R.color.colorGoogleCircleSplash))
+                .colorPressed(getResources().getColor(R.color.colorGoogleCircleSplash));
 
 
     }
@@ -134,29 +130,19 @@ public class AuthActivity extends AppCompatActivity implements AuthContract.View
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                AnimationUtil.useTransparency(signInGoogleButton, 500, 1f, .0f, () -> signInFacebookButton.setEnabled(false));
+                morphingAnimationFacebook.animationListener(() -> {
+                    int coord[] = new int[2];
+                    AnimationUtil.moveToCenterView(coord, (ViewGroup) findViewById(R.id.containerLL), signInFacebookButton, getBaseContext(), () -> {
+                        AnimationUtil.useTransparency(signInFacebookButton, 100, 1f, 0f, null);
+                        AnimationUtil.splashInCoordinate(view, coord[0], coord[1], getResources().getColor(R.color.colorFacebookCircleSplash), DURATION_ANIMATION, 0.2f, 1f, () -> {
+                            presenter.saveTokenForFacebook(loginResult.getAccessToken().getToken());
+                            presenter.trySignIn();
+                        });
+                    });
 
-                morphingAnimationFacebook.animationListener(() -> showAnimation(view, signInFacebookButton, R.color.colorFacebookCircleSplash).addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animator) {
 
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-                        presenter.saveTokenForFacebook(loginResult.getAccessToken().getToken());
-                        presenter.trySignIn();
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animator) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animator) {
-
-                    }
-                }));
+                });
                 signInFacebookButton.morph(morphingAnimationFacebook);
 
 
@@ -190,31 +176,21 @@ public class AuthActivity extends AppCompatActivity implements AuthContract.View
             user.setName(acct.getDisplayName());
             user.setEmail(acct.getEmail());
             Injection.provideManager().cacheUserData(user);
-            morphingAnimationGoogle.animationListener(() -> showAnimation(view, signInGoogleButton, R.color.colorGoogleCircleSplash).addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animator) {
+            AnimationUtil.useTransparency(signInFacebookButton, 100, 1f, .0f, () -> signInFacebookButton.setEnabled(false));
 
-                }
+            morphingAnimationGoogle.animationListener(() -> {
+                int coord[] = new int[2];
+                AnimationUtil.moveToCenterView(coord, (ViewGroup) findViewById(R.id.containerLL), signInGoogleButton, this, () -> {
+                    AnimationUtil.useTransparency(signInGoogleButton, 100, 1f, 0f, null);
+                    AnimationUtil.splashInCoordinate(view, coord[0], coord[1], getResources().getColor(R.color.colorGoogleCircleSplash), DURATION_ANIMATION, 0.2f, 1f, () -> {
+                        presenter.saveTokenForGoogle(acct.getId());
+                        presenter.trySignIn();
+                    });
+                });
 
-                @Override
-                public void onAnimationEnd(Animator animator) {
-                    presenter.saveTokenForGoogle(acct.getId());
-                    presenter.trySignIn();
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animator) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animator) {
-
-                }
-            }));
+            });
             signInGoogleButton.morph(morphingAnimationGoogle);
         } else {
-            // Signed out, show unauthenticated UI.
         }
     }
 
@@ -246,24 +222,6 @@ public class AuthActivity extends AppCompatActivity implements AuthContract.View
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, 1);
     }
-
-    private Animator showAnimation(final View view, final View buttonView, int color) {
-        view.setBackgroundColor(color);
-        view.getBackground().setAlpha(255);
-        int cx = (int) (buttonView.getX() + buttonView.getWidth() / 2) + 28;
-        int cy = (int) (buttonView.getY() + buttonView.getHeight() / 2) + 28;
-
-        int finalRadius = Math.max(view.getWidth(), view.getHeight());
-
-        Animator anim = ViewAnimationUtils.createCircularReveal(view, cx, cy,
-                0, finalRadius);
-        anim.setDuration(DURATION_ANIMATION);
-
-        view.setVisibility(View.VISIBLE);
-        anim.start();
-        return anim;
-    }
-
 
 
 }

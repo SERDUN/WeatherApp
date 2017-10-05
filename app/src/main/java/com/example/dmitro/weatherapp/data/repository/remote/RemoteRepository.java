@@ -15,10 +15,7 @@ import com.example.dmitro.weatherapp.utils.callback.Action0;
 import com.example.dmitro.weatherapp.utils.callback.Action1;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

@@ -2,7 +2,6 @@ package com.example.dmitro.weatherapp.service.social_service;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.WeatherApp;

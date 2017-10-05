@@ -2,7 +2,6 @@ package com.example.dmitro.weatherapp.screen.navigation;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -15,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.WeatherApp;
@@ -27,8 +25,6 @@ import com.example.dmitro.weatherapp.service.social_service.GoogleApi;
 import com.example.dmitro.weatherapp.utils.PicassoCirleTransformation;
 import com.example.dmitro.weatherapp.utils.SocialProfileUtils;
 import com.example.dmitro.weatherapp.utils.callback.Action0;
-import com.facebook.login.LoginManager;
-import com.google.android.gms.plus.PlusShare;
 import com.squareup.picasso.Picasso;
 
 import butterknife.ButterKnife;

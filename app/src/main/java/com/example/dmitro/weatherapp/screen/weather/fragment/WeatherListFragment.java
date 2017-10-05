@@ -12,10 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.dmitro.weatherapp.R;
+import com.example.dmitro.weatherapp.data.loader.CurrentWeatherManyDayLoader;
+import com.example.dmitro.weatherapp.data.loader.base.Response;
 import com.example.dmitro.weatherapp.data.model.weather.current.WeatherResponse;
 import com.example.dmitro.weatherapp.screen.forecast_list.ForecastListActivity;
-import com.example.dmitro.weatherapp.data.loader.base.Response;
-import com.example.dmitro.weatherapp.data.loader.CurrentWeatherManyDayLoader;
 import com.example.dmitro.weatherapp.utils.MyUtil;
 
 import java.util.ArrayList;
