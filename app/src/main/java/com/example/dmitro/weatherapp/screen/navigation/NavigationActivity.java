@@ -16,15 +16,15 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.dmitro.weatherapp.R;
-import com.example.dmitro.weatherapp.data.model.social.UserFacebook;
+import com.example.dmitro.weatherapp.data.model.user.UserProfile;
+import com.example.dmitro.weatherapp.data.repository.local.UserSessionStore;
 import com.example.dmitro.weatherapp.databinding.ActivityNavigationBinding;
 import com.example.dmitro.weatherapp.screen.authorization.AuthActivity;
 import com.example.dmitro.weatherapp.screen.weather.WeatherDetailsFragment;
-import com.example.dmitro.weatherapp.service.social_service.FacebookApi;
+import com.example.dmitro.weatherapp.service.auth.GoogleAuthService;
+import com.example.dmitro.weatherapp.service.share.WeatherShare;
 import com.example.dmitro.weatherapp.utils.ImageLoader;
 import com.example.dmitro.weatherapp.utils.callback.Action0;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
 import com.google.android.material.navigation.NavigationView;
 
 public class NavigationActivity extends AppCompatActivity
@@ -44,7 +44,7 @@ public class NavigationActivity extends AppCompatActivity
         setContentView(binding.getRoot());
 
         binding.navView.setNavigationItemSelectedListener(this);
-        binding.navFooterSignOut.setOnClickListener(v -> signOut());
+        binding.navFooterSignOut.setOnClickListener(v -> presenter.signOut());
         initHeader(binding.navView.getHeaderView(0));
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -60,22 +60,14 @@ public class NavigationActivity extends AppCompatActivity
         });
 
         addFragment(WeatherDetailsFragment.newInstance(), WeatherDetailsFragment.WEATHER_DETAILS_FRAGMENT_KEY);
-        new NavigationPresenter(this);
-        presenter.getCurrentUser();
+        new NavigationPresenter(this, new UserSessionStore(this), new GoogleAuthService(this));
+        presenter.loadCurrentUser();
     }
 
     private void initHeader(View header) {
         fullNameTextView = header.findViewById(R.id.full_name_text_view);
         emailTextView = header.findViewById(R.id.email_text_view);
         userImageView = header.findViewById(R.id.user_avatar_image_view);
-    }
-
-    private void signOut() {
-        if (FacebookSdk.isInitialized()) {
-            LoginManager.getInstance().logOut();
-        }
-        startActivity(new Intent(this, AuthActivity.class));
-        finish();
     }
 
     @Override
@@ -98,8 +90,9 @@ public class NavigationActivity extends AppCompatActivity
         if (id == R.id.nav_current_weather) {
             addFragment(WeatherDetailsFragment.newInstance(), WeatherDetailsFragment.WEATHER_DETAILS_FRAGMENT_KEY);
         } else if (id == R.id.nav_share_weather) {
-            boolean shared = FacebookApi.shareWeather();
-            Toast.makeText(this, shared ? R.string.shared_weather : R.string.message_text, Toast.LENGTH_SHORT).show();
+            if (!WeatherShare.shareCurrentWeather(this)) {
+                Toast.makeText(this, R.string.message_text, Toast.LENGTH_SHORT).show();
+            }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -119,27 +112,24 @@ public class NavigationActivity extends AppCompatActivity
     }
 
     @Override
-    public void showProgressBar(boolean show) {
-    }
-
-    @Override
-    public void showContent(boolean show) {
-    }
-
-    @Override
-    public void showUserInformation(UserFacebook userFacebook) {
-        if (userFacebook == null) {
-            return;
-        }
-        fullNameTextView.setText(userFacebook.getName());
-        emailTextView.setText(userFacebook.getEmail());
-        if (userFacebook.getPicture() != null && userFacebook.getPicture().getData() != null) {
-            ImageLoader.loadAvatar(userImageView, userFacebook.getPicture().getData().getUrl());
+    public void showUserInformation(UserProfile profile) {
+        fullNameTextView.setText(profile.getName());
+        emailTextView.setText(profile.getEmail());
+        if (profile.getPhotoUrl() != null) {
+            ImageLoader.loadAvatar(userImageView, profile.getPhotoUrl());
         }
     }
 
     @Override
-    public void showFailure() {
+    public void showGuest() {
+        fullNameTextView.setText(R.string.guest);
+        emailTextView.setText("");
+    }
+
+    @Override
+    public void openAuthScreen() {
+        startActivity(new Intent(this, AuthActivity.class));
+        finish();
     }
 
     @Override

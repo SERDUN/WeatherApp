@@ -1,30 +1,20 @@
 package com.example.dmitro.weatherapp.screen.navigation;
 
-import com.example.dmitro.weatherapp.data.model.social.UserFacebook;
+import com.example.dmitro.weatherapp.data.model.user.UserProfile;
 import com.example.dmitro.weatherapp.screen.BaseView;
 
-/**
- * Created by dmitro on 29.09.17.
- */
-
 public class NavigationContract {
-    interface View extends BaseView<NavigationContract.Presenter> {
+    interface View extends BaseView<Presenter> {
+        void showUserInformation(UserProfile profile);
 
-        void showProgressBar(boolean show);
+        void showGuest();
 
-        void showContent(boolean show);
-
-        void showUserInformation(UserFacebook userFacebook);
-
-
-        void showFailure();
-
+        void openAuthScreen();
     }
 
     interface Presenter {
-        void init();
+        void loadCurrentUser();
 
-        void getCurrentUser();
-
+        void signOut();
     }
 }
