@@ -1,37 +1,43 @@
 package com.example.dmitro.weatherapp.screen.weather;
 
-
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.weather.current.WeatherResponse;
+import com.example.dmitro.weatherapp.databinding.ActivityWeatherBinding;
 import com.example.dmitro.weatherapp.screen.failure.FailureDialog;
 import com.example.dmitro.weatherapp.screen.weather.fragment.WeatherCurrentDetailsFragment;
 import com.example.dmitro.weatherapp.screen.weather.fragment.WeatherListFragment;
 import com.example.dmitro.weatherapp.utils.MyUtil;
 import com.example.dmitro.weatherapp.utils.callback.Action0;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceTypes;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.widget.PlaceAutocomplete;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -40,161 +46,204 @@ public class WeatherDetailsFragment extends Fragment implements WeatherDetailsCo
     public final static String WEATHER_DETAILS_FRAGMENT_KEY = "WeatherDetailsFragment";
     public final static String WEATHER_DETAILS_FRAGMENT_NAME_CITY_KEY = "WeatherDetailsFragmentNameCity";
 
+    private static final String[] LOCATION_PERMISSIONS = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+    private static final List<Place.Field> PLACE_FIELDS =
+            Arrays.asList(Place.Field.ID, Place.Field.DISPLAY_NAME, Place.Field.LOCATION);
+
     private WeatherDetailsContract.Presenter presenter;
-
-    private int PLACE_PICKER_REQUEST = 1;
-
-    private PlacePicker.IntentBuilder builder;
-
-    @BindView(R.id.toolbar_title)
-    public TextView titleTv;
-
-    @BindView(R.id.backg_weather_details_activity_iv)
-    public ImageView backgroundWeather;
-
-    @BindView(R.id.weather_details_pb)
-    public ProgressBar progressBar;
-
-    @BindView(R.id.content_weather_details_lv)
-    public android.view.View contentView;
-
-    @BindView(R.id.back_btn)
-    public ImageButton backButton;
-
-    @BindView(R.id.location_button)
-    public ImageButton locationButton;
-
-
+    private ActivityWeatherBinding binding;
     private FailureDialog failureDialog;
-
     private Action0 listener;
 
+    private final ActivityResultLauncher<String[]> locationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+                boolean granted = false;
+                for (Boolean value : result.values()) {
+                    granted |= Boolean.TRUE.equals(value);
+                }
+                if (granted) {
+                    loadWeatherForCurrentLocation();
+                } else {
+                    showProgressBar(false);
+                    showFailure();
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> placeAutocompleteLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (binding != null) {
+                    binding.toolbar.locationButton.setEnabled(true);
+                }
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    AutocompletePrediction prediction = PlaceAutocomplete.getPredictionFromIntent(result.getData());
+                    AutocompleteSessionToken token = PlaceAutocomplete.getSessionTokenFromIntent(result.getData());
+                    if (prediction != null) {
+                        fetchPlaceAndLoad(prediction.getPlaceId(), token);
+                    }
+                }
+            });
 
     public WeatherDetailsFragment() {
     }
 
-
     public static WeatherDetailsFragment newInstance() {
-        WeatherDetailsFragment fragment = new WeatherDetailsFragment();
-        return fragment;
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+        return new WeatherDetailsFragment();
     }
 
     @Override
-    public android.view.View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public android.view.View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                           Bundle savedInstanceState) {
-        android.view.View view = inflater.inflate(R.layout.activity_weather, container, false);
-        ButterKnife.bind(this, view);
+        binding = ActivityWeatherBinding.inflate(inflater, container, false);
         new WeatherDetailsPresenter(this);
         init();
         initToolbar();
         applyBlur();
 
         if (savedInstanceState == null) {
-            presenter.getCurrentWeather();
-            presenter.getCurrentWeatherByFiveDays();
+            requestLocationAndLoad();
         }
-        return view;
+        return binding.getRoot();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof Action0) {
             listener = (Action0) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context + " must implement Action0");
         }
     }
 
     private void initToolbar() {
-        backButton.setImageResource(R.drawable.ic_menu_black_24dp);
-        backButton.setOnClickListener(view -> {
-            listener.call();
-
-        });
+        binding.toolbar.backBtn.setImageResource(R.drawable.ic_menu_black_24dp);
+        binding.toolbar.backBtn.setOnClickListener(view -> listener.call());
     }
 
-
     private void applyBlur() {
-        backgroundWeather.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+        binding.backgWeatherDetailsActivityIv.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                backgroundWeather.getViewTreeObserver().removeOnPreDrawListener(this);
-                MyUtil.blur(backgroundWeather, getContext());
+                if (binding == null) {
+                    return true;
+                }
+                binding.backgWeatherDetailsActivityIv.getViewTreeObserver().removeOnPreDrawListener(this);
+                MyUtil.blur(binding.backgWeatherDetailsActivityIv, requireContext());
                 return true;
             }
         });
-
     }
 
-
     private void init() {
-        builder = new PlacePicker.IntentBuilder();
-
         failureDialog = new FailureDialog();
         failureDialog.setCallback(() -> {
             failureDialog.dismiss();
-            presenter.getCurrentWeather();
-            presenter.getCurrentWeatherByFiveDays();
+            requestLocationAndLoad();
         });
 
         presenter.init();
-        builder = new PlacePicker.IntentBuilder();
-        locationButton.setOnClickListener(onClick -> {
-            try {
-                locationButton.setEnabled(false);
-                startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-            } catch (GooglePlayServicesRepairableException e) {
-                e.printStackTrace();
-            } catch (GooglePlayServicesNotAvailableException e) {
-                e.printStackTrace();
-            }
-        });
-
-
+        binding.toolbar.locationButton.setOnClickListener(onClick -> openPlaceAutocomplete());
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, getContext());
-                presenter.getWeatherForLanLon(place.getLatLng().latitude, place.getLatLng().longitude);
-                presenter.getWeatherByFiveDayForLatLon(place.getLatLng().latitude, place.getLatLng().longitude);
-
-            }
-            locationButton.setEnabled(true);
-
+    private void openPlaceAutocomplete() {
+        if (!Places.isInitialized()) {
+            showFailure();
+            return;
         }
+        binding.toolbar.locationButton.setEnabled(false);
+        Intent intent = new PlaceAutocomplete.IntentBuilder()
+                .setTypesFilter(Collections.singletonList(PlaceTypes.CITIES))
+                .build(requireContext());
+        placeAutocompleteLauncher.launch(intent);
+    }
+
+    /** The autocomplete widget returns only a prediction; the coordinates come from a Place Details call. */
+    private void fetchPlaceAndLoad(String placeId, @Nullable AutocompleteSessionToken token) {
+        showProgressBar(true);
+        FetchPlaceRequest.Builder request = FetchPlaceRequest.builder(placeId, PLACE_FIELDS);
+        if (token != null) {
+            request.setSessionToken(token);
+        }
+        Places.createClient(requireContext()).fetchPlace(request.build())
+                .addOnSuccessListener(response -> {
+                    LatLng location = response.getPlace().getLocation();
+                    if (location == null) {
+                        showProgressBar(false);
+                        showFailure();
+                        return;
+                    }
+                    presenter.getWeatherForLanLon(location.latitude, location.longitude);
+                    presenter.getWeatherByFiveDayForLatLon(location.latitude, location.longitude);
+                })
+                .addOnFailureListener(e -> {
+                    showProgressBar(false);
+                    showFailure();
+                });
+    }
+
+    private void requestLocationAndLoad() {
+        if (hasLocationPermission()) {
+            loadWeatherForCurrentLocation();
+        } else {
+            locationPermissionLauncher.launch(LOCATION_PERMISSIONS);
+        }
+    }
+
+    private boolean hasLocationPermission() {
+        for (String permission : LOCATION_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void loadWeatherForCurrentLocation() {
+        showProgressBar(true);
+        presenter.getCurrentWeather();
+        presenter.getCurrentWeatherByFiveDays();
     }
 
     @Override
     public void showCityNameInToolbar(String name) {
-        titleTv.setText(name);
+        binding.toolbar.toolbarTitle.setText(name);
     }
 
     @Override
     public void showFailure() {
-//        contentView.setVisibility(android.view.View.GONE);
-//        failureDialog.show(getChildFragmentManager(), WEATHER_DETAILS_FRAGMENT_KEY);
-
+        if (isAdded() && !failureDialog.isAdded()) {
+            failureDialog.show(getChildFragmentManager(), WEATHER_DETAILS_FRAGMENT_KEY);
+        }
     }
 
     @Override
     public void showWeatherList(ArrayList<HashMap<String, ArrayList<WeatherResponse>>> responseManyDayWeather) {
-        getChildFragmentManager().findFragmentById(R.id.fragment2).getLoaderManager().getLoader(WeatherListFragment.FRAGMENT_KEY.hashCode()).onContentChanged();
+        notifyChildLoader(R.id.fragment2, WeatherListFragment.FRAGMENT_KEY);
+    }
 
+    @Override
+    public void showWeatherDetails(WeatherResponse weatherResponse) {
+        notifyChildLoader(R.id.fragment1, WeatherCurrentDetailsFragment.FRAGMENT_KEY);
+    }
 
+    private void notifyChildLoader(int fragmentId, String loaderKey) {
+        Fragment child = getChildFragmentManager().findFragmentById(fragmentId);
+        if (child == null) {
+            return;
+        }
+        androidx.loader.content.Loader<?> loader = androidx.loader.app.LoaderManager.getInstance(child).getLoader(loaderKey.hashCode());
+        if (loader != null) {
+            loader.onContentChanged();
+        }
     }
 
     @Override
@@ -204,47 +253,31 @@ public class WeatherDetailsFragment extends Fragment implements WeatherDetailsCo
 
     @Override
     public void showProgressBar(boolean show) {
-        if (show) {
-            progressBar.setVisibility(android.view.View.VISIBLE);
-        } else {
-            progressBar.setVisibility(android.view.View.GONE);
-
+        if (binding != null) {
+            binding.weatherDetailsPb.setVisibility(show ? android.view.View.VISIBLE : android.view.View.GONE);
         }
     }
-
 
     @Override
     public void showContent(boolean show) {
-        if (show) {
-            contentView.setVisibility(android.view.View.VISIBLE);
-        } else {
-            contentView.setVisibility(android.view.View.GONE);
-
+        if (binding != null) {
+            binding.contentWeatherDetailsLv.setVisibility(show ? android.view.View.VISIBLE : android.view.View.GONE);
         }
-
     }
 
     @Override
-    public void showWeatherDetails(WeatherResponse weatherResponse) {
-        getChildFragmentManager().findFragmentById(R.id.fragment1).getLoaderManager().getLoader(WeatherCurrentDetailsFragment.FRAGMENT_KEY.hashCode()).onContentChanged();
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString(WEATHER_DETAILS_FRAGMENT_NAME_CITY_KEY, titleTv.getText().toString());
+        if (binding != null) {
+            savedInstanceState.putString(WEATHER_DETAILS_FRAGMENT_NAME_CITY_KEY, binding.toolbar.toolbarTitle.getText().toString());
+        }
     }
-
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState != null)
-            titleTv.setText(savedInstanceState.getString(WEATHER_DETAILS_FRAGMENT_NAME_CITY_KEY));
+        if (savedInstanceState != null) {
+            binding.toolbar.toolbarTitle.setText(savedInstanceState.getString(WEATHER_DETAILS_FRAGMENT_NAME_CITY_KEY));
+        }
     }
-
-
 }
-
-

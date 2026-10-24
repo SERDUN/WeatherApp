@@ -35,7 +35,11 @@ public class WeatherRemoteRepository implements WeatherDataSource {
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
-                success.call(response.body());
+                if (response.isSuccessful() && response.body() != null) {
+                    success.call(response.body());
+                } else {
+                    failure.call(new retrofit2.HttpException(response));
+                }
                 complete.call();
             }
 
@@ -53,7 +57,11 @@ public class WeatherRemoteRepository implements WeatherDataSource {
         call.enqueue(new Callback<Places>() {
             @Override
             public void onResponse(Call<Places> call, Response<Places> response) {
-                success.call(response.body());
+                if (response.isSuccessful() && response.body() != null) {
+                    success.call(response.body());
+                } else {
+                    failure.call(new retrofit2.HttpException(response));
+                }
                 complete.call();
 
             }
@@ -74,7 +82,11 @@ public class WeatherRemoteRepository implements WeatherDataSource {
         response.enqueue(new Callback<ResponseManyDayWeather>() {
             @Override
             public void onResponse(Call<ResponseManyDayWeather> call, Response<ResponseManyDayWeather> response) {
-                success.call(response.body());
+                if (response.isSuccessful() && response.body() != null) {
+                    success.call(response.body());
+                } else {
+                    failure.call(new retrofit2.HttpException(response));
+                }
                 complete.call();
             }
 
@@ -93,7 +105,11 @@ public class WeatherRemoteRepository implements WeatherDataSource {
         call.enqueue(new Callback<PlaceDetails>() {
             @Override
             public void onResponse(Call<PlaceDetails> call, Response<PlaceDetails> response) {
-                success.call(response.body());
+                if (response.isSuccessful() && response.body() != null) {
+                    success.call(response.body());
+                } else {
+                    failure.call(new retrofit2.HttpException(response));
+                }
                 complete.call();
             }
 

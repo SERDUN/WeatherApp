@@ -1,15 +1,8 @@
 package com.example.dmitro.weatherapp;
 
 import android.app.Application;
-import android.content.Context;
 
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
-/**
- * Created by dmitro on 26.09.17.
- */
+import com.google.android.libraries.places.api.Places;
 
 public class WeatherApp extends Application {
 
@@ -22,21 +15,10 @@ public class WeatherApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        Realm.init(this);
-
-        CalligraphyConfig.initDefault(
-                new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/calibri.ttf")
-                        .setFontAttrId(R.attr.fontPath)
-                        .build()
-        );
         instance = this;
 
-
-    }
-
-    @Override
-    protected void attachBaseContext(Context context) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(context));
+        if (!BuildConfig.PLACES_API_KEY.isEmpty() && !Places.isInitialized()) {
+            Places.initializeWithNewPlacesApiEnabled(this, BuildConfig.PLACES_API_KEY);
+        }
     }
 }

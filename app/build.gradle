@@ -1,63 +1,79 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
+
+// API keys live in local.properties (git-ignored), see README.
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream { localProperties.load(it) }
+}
+def secret = { String name -> localProperties.getProperty(name, '') }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    namespace 'com.example.dmitro.weatherapp'
+    compileSdk 37
 
     defaultConfig {
         applicationId "com.example.dmitro.weatherapp"
-        minSdkVersion 19
-        targetSdkVersion 19
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        minSdk 24
+        targetSdk 37
+        versionCode 2
+        versionName "1.1"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        jackOptions {
-            enabled true
-        }
+        buildConfigField 'String', 'BASE_WEATHER_URL', '"https://api.openweathermap.org/data/2.5/"'
+        buildConfigField 'String', 'BASE_GEO_URL', '"https://maps.googleapis.com/"'
+        buildConfigField 'String', 'ICON_WEATHER_URL', '"https://openweathermap.org/img/w/"'
+        buildConfigField 'String', 'WEATHER_API_KEY', "\"${secret('WEATHER_API_KEY')}\""
+        buildConfigField 'String', 'PLACES_API_KEY', "\"${secret('PLACES_API_KEY')}\""
 
+        manifestPlaceholders = [facebookAppId: secret('FACEBOOK_APP_ID')]
+        resValue 'string', 'facebook_app_id', secret('FACEBOOK_APP_ID')
+        resValue 'string', 'facebook_client_token', secret('FACEBOOK_CLIENT_TOKEN')
+        resValue 'string', 'fb_login_protocol_scheme', "fb${secret('FACEBOOK_APP_ID')}"
     }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 
-}
-
-repositories {
-    // You can also use jcenter if you prefer
-    mavenCentral()
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+        resValues true
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.9.0'
+    implementation 'androidx.appcompat:appcompat:1.8.0'
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.2'
+    implementation 'androidx.loader:loader:1.2.0'
+    implementation 'com.google.android.material:material:1.14.0'
 
+    implementation 'com.squareup.retrofit2:retrofit:3.0.0'
+    implementation 'com.squareup.retrofit2:converter-gson:3.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:5.5.1'
+    implementation 'com.google.code.gson:gson:2.14.0'
 
+    implementation 'com.github.bumptech.glide:glide:5.0.9'
 
-    compile 'com.google.android.gms:play-services-maps:11.0.4'
-    compile 'com.google.android.gms:play-services-places:11.0.4'
-    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.android.gms:play-services-location:11.0.4'
-    compile 'com.google.android.gms:play-services-auth:11.0.4'
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
-    compile 'com.jakewharton:butterknife:8.5.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.android.support:cardview-v7:25.3.1'
-    compile 'com.facebook.android:facebook-android-sdk:4.27.0'
-    compile 'com.facebook.android:facebook-login:4.27.0'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    implementation 'com.google.android.gms:play-services-location:21.4.0'
+    implementation 'com.google.android.libraries.places:places:6.0.2'
+
+    implementation 'com.facebook.android:facebook-android-sdk:19.0.0'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
 }

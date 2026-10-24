@@ -19,9 +19,6 @@
     <string name="lon">lon</string>
     <string name="weather_forecast_for_day">Weather forecast for the day</string>
     <string name="weekday">Weekday</string>
-    <string name="server_client_id">283949655888-o71fcj042ohfrvsgh6i33b4nsfkvp3mg.apps.googleusercontent.com</string>
-    <string name="facebook_app_id">1966327863644048</string>
-    <string name="fb_login_protocol_scheme">fb1966327863644048</string>
     <string name="title_activity_navigation">NavigationActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -34,6 +31,8 @@
     <string name="full_name">Full name</string>
     <string name="email">Email</string>
     <string name="sign_out">Sign out</string>
+    <string name="facebook_not_configured">Facebook login is not configured: add FACEBOOK_APP_ID and FACEBOOK_CLIENT_TOKEN to local.properties.</string>
+    <string name="continue_without_login">Continue without login</string>
     <string name="weather">Show Weather</string>
     <string name="shared_weather">Shared Weather</string>
 
