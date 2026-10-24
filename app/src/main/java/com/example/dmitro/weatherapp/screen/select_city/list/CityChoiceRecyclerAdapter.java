@@ -1,6 +1,6 @@
 package com.example.dmitro.weatherapp.screen.select_city.list;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.geo.places.Prediction;
-import com.example.dmitro.weatherapp.screen.RecyclerViewEmptySupport;
 
 import java.util.ArrayList;
 
@@ -16,7 +15,7 @@ import java.util.ArrayList;
  * Created by dmitro on 26.09.17.
  */
 
-public class CityChoiceRecyclerAdapter extends RecyclerViewEmptySupport.Adapter<CityChoiceRecyclerAdapter.PlaceHolder> {
+public class CityChoiceRecyclerAdapter extends RecyclerView.Adapter<CityChoiceRecyclerAdapter.PlaceHolder> {
     private ArrayList<Prediction> predictions;
     private RecyclerListener recyclerViewListener;
     private int lastCheckedPosition = -1;
@@ -62,14 +61,17 @@ public class CityChoiceRecyclerAdapter extends RecyclerViewEmptySupport.Adapter<
 
         public PlaceHolder(View itemView) {
             super(itemView);
-            tvCountry = (TextView) itemView.findViewById(R.id.tvCountry);
-            tvCity = (TextView) itemView.findViewById(R.id.tvCity);
+            tvCountry = itemView.findViewById(R.id.tvCountry);
+            tvCity = itemView.findViewById(R.id.tvCity);
 
             itemView.setOnClickListener(v -> {
-                lastCheckedPosition = getAdapterPosition();
+                int position = getBindingAdapterPosition();
+                if (position == RecyclerView.NO_POSITION) {
+                    return;
+                }
+                lastCheckedPosition = position;
                 notifyItemRangeChanged(0, predictions.size());
-                notifyItemChanged(lastCheckedPosition);
-                recyclerViewListener.onClick(predictions.get(getAdapterPosition()));
+                recyclerViewListener.onClick(predictions.get(position));
             });
         }
 

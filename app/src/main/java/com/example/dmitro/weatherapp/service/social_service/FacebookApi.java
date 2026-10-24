@@ -3,52 +3,36 @@ package com.example.dmitro.weatherapp.service.social_service;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
-import com.example.dmitro.weatherapp.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.dmitro.weatherapp.WeatherApp;
 import com.example.dmitro.weatherapp.data.model.weather.current.WeatherResponse;
 import com.example.dmitro.weatherapp.data.repository.WeatherRepositoryManager;
+import com.example.dmitro.weatherapp.utils.ImageLoader;
 import com.example.dmitro.weatherapp.utils.Injection;
+import com.facebook.FacebookSdk;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-
-import static com.example.dmitro.weatherapp.screen.weather.fragment.WeatherCurrentDetailsFragment.POSTFIX_BY_ICON_URL;
-
-/**
- * Created by dmitro on 02.10.17.
- */
 
 public class FacebookApi {
 
-    //// TODO: 02.10.17 add error handling
+    public static final String TEMPERATURE = "t°: ";
+    public static final String LOCATION = "location: ";
 
     public static void sharePhoto(String caption, String photoUrl) {
-//        String url = WeatherApp.getInstance().getBaseContext().getString(R.string.ICON_WEATHER_URL) + presenter.getCacheWeather().getWeather().get(0).getIcon() + POSTFIX_BY_ICON_URL;
-        Picasso.with(WeatherApp.getInstance().getBaseContext()).load(photoUrl).into(new Target() {
+        Glide.with(WeatherApp.getInstance()).asBitmap().load(photoUrl).into(new CustomTarget<Bitmap>() {
             @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                SharePhoto photo = new SharePhoto.Builder()
-                        .setBitmap(bitmap)
-                        .setCaption(caption)
-                        .build();
-
-                SharePhotoContent content = new SharePhotoContent.Builder()
-                        .addPhoto(photo)
-                        .build();
-
-                ShareApi.share(content, null);
+            public void onResourceReady(@NonNull Bitmap bitmap, @Nullable Transition<? super Bitmap> transition) {
+                sharePhoto(caption, bitmap);
             }
 
             @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
+            public void onLoadCleared(@Nullable Drawable placeholder) {
             }
         });
     }
@@ -65,14 +49,19 @@ public class FacebookApi {
         ShareApi.share(content, null);
     }
 
-
-    public static final String TEMPERATURE = "t°: ";
-    public static final String LOCATION = "location: ";
-
-    public static void shareWeather() {
-        WeatherRepositoryManager serviceManager = Injection.provideManager();
-        String url = WeatherApp.getInstance().getBaseContext().getString(R.string.ICON_WEATHER_URL) + serviceManager.getCacheWeather().getWeather().get(0).getIcon() + POSTFIX_BY_ICON_URL;
-        String caption = TEMPERATURE + serviceManager.getCacheWeather().getMain().getTemp() +"  "+LOCATION + serviceManager.getCacheWeather().getName();
+    /** Shares the cached current weather; returns false when nothing has been loaded yet. */
+    public static boolean shareWeather() {
+        if (!FacebookSdk.isInitialized()) {
+            return false;
+        }
+        WeatherRepositoryManager manager = Injection.provideManager();
+        WeatherResponse weather = manager.getCacheWeather();
+        if (weather == null || weather.getWeather() == null || weather.getWeather().isEmpty()) {
+            return false;
+        }
+        String url = ImageLoader.weatherIconUrl(weather.getWeather().get(0).getIcon());
+        String caption = TEMPERATURE + weather.getMain().getTemp() + "  " + LOCATION + weather.getName();
         sharePhoto(caption, url);
+        return true;
     }
 }

@@ -1,111 +1,81 @@
 package com.example.dmitro.weatherapp.screen.navigation;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
+
 import com.example.dmitro.weatherapp.R;
 import com.example.dmitro.weatherapp.data.model.social.UserFacebook;
+import com.example.dmitro.weatherapp.databinding.ActivityNavigationBinding;
 import com.example.dmitro.weatherapp.screen.authorization.AuthActivity;
 import com.example.dmitro.weatherapp.screen.weather.WeatherDetailsFragment;
 import com.example.dmitro.weatherapp.service.social_service.FacebookApi;
-import com.example.dmitro.weatherapp.utils.MyUtil;
-import com.example.dmitro.weatherapp.utils.PicassoCirleTransformation;
+import com.example.dmitro.weatherapp.utils.ImageLoader;
 import com.example.dmitro.weatherapp.utils.callback.Action0;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.share.ShareApi;
-import com.facebook.share.Sharer;
-import com.facebook.share.internal.ShareFeedContent;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.model.SharePhoto;
-import com.facebook.share.model.SharePhotoContent;
-import com.facebook.share.widget.ShareDialog;
-import com.squareup.picasso.Picasso;
-
-import java.util.Arrays;
-import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import com.google.android.material.navigation.NavigationView;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Action0, NavigationContract.View {
 
-    DrawerLayout drawer;
+    private ActivityNavigationBinding binding;
     private NavigationContract.Presenter presenter;
 
-    public ImageView userImageView;
-
-    public TextView fullNameTextView;
-
-    public TextView emailTextView;
+    private ImageView userImageView;
+    private TextView fullNameTextView;
+    private TextView emailTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation);
-        ButterKnife.bind(this);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        binding = ActivityNavigationBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
+        binding.navView.setNavigationItemSelectedListener(this);
+        binding.navFooterSignOut.setOnClickListener(v -> signOut());
+        initHeader(binding.navView.getHeaderView(0));
 
-        fullNameTextView = (TextView) drawer.findViewById(R.id.full_name_text_view);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        View header = navigationView.getHeaderView(0);
-        initHeader(header);
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
+                }
+            }
+        });
 
         addFragment(WeatherDetailsFragment.newInstance(), WeatherDetailsFragment.WEATHER_DETAILS_FRAGMENT_KEY);
         new NavigationPresenter(this);
         presenter.getCurrentUser();
-
-
     }
-
 
     private void initHeader(View header) {
-        fullNameTextView = (TextView) header.findViewById(R.id.full_name_text_view);
-        emailTextView = (TextView) header.findViewById(R.id.email_text_view);
-        userImageView = (ImageView) header.findViewById(R.id.user_avatar_image_view);
-
+        fullNameTextView = header.findViewById(R.id.full_name_text_view);
+        emailTextView = header.findViewById(R.id.email_text_view);
+        userImageView = header.findViewById(R.id.user_avatar_image_view);
     }
 
-    @OnClick(R.id.nav_footer_sign_out)
-    public void sigOut() {
-        LoginManager.getInstance().logOut();
+    private void signOut() {
+        if (FacebookSdk.isInitialized()) {
+            LoginManager.getInstance().logOut();
+        }
         startActivity(new Intent(this, AuthActivity.class));
         finish();
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override
@@ -115,33 +85,23 @@ public class NavigationActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-
-
-        switch (item.getItemId()) {
-            case R.id.nav_current_weather:
-                addFragment(WeatherDetailsFragment.newInstance(), WeatherDetailsFragment.WEATHER_DETAILS_FRAGMENT_KEY);
-                break;
-            case R.id.nav_share_weather:
-                Toast.makeText(this, "Shared weather", Toast.LENGTH_SHORT).show();
-                FacebookApi.shareWeather();
-                break;
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.nav_current_weather) {
+            addFragment(WeatherDetailsFragment.newInstance(), WeatherDetailsFragment.WEATHER_DETAILS_FRAGMENT_KEY);
+        } else if (id == R.id.nav_share_weather) {
+            boolean shared = FacebookApi.shareWeather();
+            Toast.makeText(this, shared ? R.string.shared_weather : R.string.message_text, Toast.LENGTH_SHORT).show();
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -153,7 +113,6 @@ public class NavigationActivity extends AppCompatActivity
         }
     }
 
-
     @Override
     public void setPresenter(NavigationContract.Presenter presenter) {
         this.presenter = presenter;
@@ -161,30 +120,30 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public void showProgressBar(boolean show) {
-
     }
 
     @Override
     public void showContent(boolean show) {
-
     }
 
     @Override
     public void showUserInformation(UserFacebook userFacebook) {
+        if (userFacebook == null) {
+            return;
+        }
         fullNameTextView.setText(userFacebook.getName());
         emailTextView.setText(userFacebook.getEmail());
-        Picasso.with(getApplicationContext())
-                .load(userFacebook.getPicture().getData().getUrl()).transform(new PicassoCirleTransformation())
-                .into(userImageView);
+        if (userFacebook.getPicture() != null && userFacebook.getPicture().getData() != null) {
+            ImageLoader.loadAvatar(userImageView, userFacebook.getPicture().getData().getUrl());
+        }
     }
 
     @Override
     public void showFailure() {
-
     }
 
     @Override
     public void call() {
-        drawer.openDrawer(Gravity.START);
+        binding.drawerLayout.openDrawer(GravityCompat.START);
     }
 }

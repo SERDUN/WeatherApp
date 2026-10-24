@@ -4,12 +4,11 @@ import android.os.Bundle;
 
 import com.example.dmitro.weatherapp.data.model.social.UserFacebook;
 import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
 
 /**
  * Created by dmitro on 29.09.17.
@@ -31,8 +30,13 @@ public class NavigationPresenter implements NavigationContract.Presenter {
 
     @Override
     public void getCurrentUser() {
+        if (!FacebookSdk.isInitialized() || AccessToken.getCurrentAccessToken() == null) {
+            return;
+        }
         GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), (object, response) -> {
-            view.showUserInformation(new Gson().fromJson(response.getRawResponse(),UserFacebook.class));
+            if (response != null && response.getRawResponse() != null) {
+                view.showUserInformation(new Gson().fromJson(response.getRawResponse(), UserFacebook.class));
+            }
         });
         Bundle parameters = new Bundle();
         parameters.putString("fields", "name,link,picture.type(large),email");

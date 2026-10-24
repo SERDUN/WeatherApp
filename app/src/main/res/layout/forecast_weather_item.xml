@@ -14,6 +14,7 @@ android:layout_marginBottom="@dimen/middle_padding"    android:layout_height="wr
         android:text="TextView" />
 
     <include
+        android:id="@+id/details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         layout="@layout/fragment_weather_details" />
