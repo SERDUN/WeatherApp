@@ -2,30 +2,20 @@ package com.example.dmitro.weatherapp.screen.authorization;
 
 import com.example.dmitro.weatherapp.screen.BaseView;
 
-/**
- * Created by dmitro on 28.09.17.
- */
-
 public class AuthContract {
-    interface View extends BaseView<AuthContract.Presenter> {
-        public void showProgressBar(boolean show);
+    interface View extends BaseView<Presenter> {
+        void showProgressBar(boolean show);
 
+        void showSignInUnavailable();
 
-        public void signInGoogle();
+        void showSignInError();
 
-        public void openBaseScreen();
-
+        void openBaseScreen();
     }
 
     interface Presenter {
-        public void saveFacebookToken(String accessToken);
+        void trySignIn();
 
-        public void trySignIn();
-
-        public void signInFacebook();
-
-        public void signInGoogle();
-
-
+        void signInGoogle(android.content.Context activity);
     }
 }

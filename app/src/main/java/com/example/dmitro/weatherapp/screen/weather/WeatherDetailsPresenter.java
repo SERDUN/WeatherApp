@@ -21,10 +21,11 @@ public class WeatherDetailsPresenter implements WeatherDetailsContract.Presenter
         weatherRepositoryManager = Injection.provideManager();
     }
 
+    /** The toolbar lives inside the content view, so it stays visible even while loading or after a failure. */
     @Override
     public void init() {
         view.showProgressBar(true);
-        view.showContent(false);
+        view.showContent(true);
     }
 
     @Override
@@ -51,10 +52,7 @@ public class WeatherDetailsPresenter implements WeatherDetailsContract.Presenter
             view.showWeatherDetails(s);
             view.showCityNameInToolbar(s.getName());
             view.showContent(true);
-        }, f -> {
-            view.showContent(false);
-            view.showFailure();
-        }, () -> view.showProgressBar(false));
+        }, f -> view.showFailure(), () -> view.showProgressBar(false));
     }
 
     @Override

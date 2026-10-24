@@ -3,7 +3,7 @@
 A small Android weather client written in 2017 as a learning project and brought back to a
 modern toolchain in 2026. It shows the current weather and a five-day forecast for the device
 location or for a city picked through Google Places autocomplete, signs the user in with
-Facebook and can share the current weather as a Facebook photo post.
+Google and can share the current weather through the system share sheet.
 
 Data comes from the [OpenWeatherMap](https://openweathermap.org/api) API; city search uses the
 [Places SDK for Android](https://developers.google.com/maps/documentation/places/android-sdk).
@@ -17,7 +17,7 @@ Data comes from the [OpenWeatherMap](https://openweathermap.org/api) API; city s
 | Network | Retrofit 3, OkHttp 5, Gson |
 | Images | Glide 5 |
 | Location and places | play-services-location, Places SDK 6 |
-| Social | Facebook Android SDK 19 (login, share) |
+| Sign-in | Credential Manager 1.6 + Sign in with Google (googleid 1.2) |
 | Architecture | MVP: `screen/<feature>/{Contract,Presenter,Fragment}` over a repository facade |
 
 ## Setup
@@ -28,13 +28,20 @@ git-ignored; Android Studio creates it with `sdk.dir`):
 ```properties
 WEATHER_API_KEY=<OpenWeatherMap API key>
 PLACES_API_KEY=<Google Cloud API key with the Places API (New) enabled>
-FACEBOOK_APP_ID=<Facebook app id>
-FACEBOOK_CLIENT_TOKEN=<Facebook client token, Settings > Advanced in the app dashboard>
+GOOGLE_SERVER_CLIENT_ID=<OAuth 2.0 client id of type "Web application" from the same Google Cloud project>
+```
+
+Sign in with Google also needs an OAuth client of type "Android" in that project with this
+app's package name `com.example.dmitro.weatherapp` and the SHA-1 of the signing key; for a debug
+build that is the key in `~/.android/debug.keystore`:
+
+```sh
+keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android | grep SHA1
 ```
 
 Missing keys do not break the build: the keys compile in as empty strings, and the matching
-feature fails at runtime instead (Places autocomplete shows the failure dialog, Facebook login
-is refused by the SDK).
+feature fails at runtime instead (Places autocomplete shows the failure dialog, the sign-in
+screen hides the Google button and offers a guest entry).
 
 ```sh
 ./gradlew assembleDebug           # app/build/outputs/apk/debug/app-debug.apk
@@ -47,7 +54,7 @@ is refused by the SDK).
 app/src/main/java/com/example/dmitro/weatherapp
   data/model        Gson models for OpenWeatherMap and Places web responses
   data/repository   WeatherDataSource + WeatherRepositoryManager (remote + in-memory cache)
-  service           Retrofit factories and interceptors, Facebook sharing, loaders
+  service           Retrofit factories and interceptors, Google sign-in, share sheet, loaders
   screen            one package per screen: Contract, Presenter, Fragment/Activity, adapters
   utils             MyUtil (date grouping, blur), ImageLoader (Glide), callbacks, Injection
 ```
