@@ -218,10 +218,11 @@ public class WeatherDetailsFragment extends Fragment implements WeatherDetailsCo
         binding.toolbar.toolbarTitle.setText(name);
     }
 
+    /** Both requests may fail in the same frame; showNow commits synchronously so isAdded() is reliable for the second call. */
     @Override
     public void showFailure() {
-        if (isAdded() && !failureDialog.isAdded()) {
-            failureDialog.show(getChildFragmentManager(), WEATHER_DETAILS_FRAGMENT_KEY);
+        if (isAdded() && !getChildFragmentManager().isStateSaved() && !failureDialog.isAdded()) {
+            failureDialog.showNow(getChildFragmentManager(), WEATHER_DETAILS_FRAGMENT_KEY);
         }
     }
 
